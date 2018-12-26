@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Wed Dec 26 11:12:56 CET 2018:
+ Derby The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579) változat betöltése: a816c00e-0167-ea00-bd55-0000032af648 példány
+a(z) /home/czakot/NetBeansProjects/RentACar/src/rentacar/rentacarDB adatbázis-könyvtáron: sun.misc.Launcher$AppClassLoader@355da254 
+
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_191-8u191-b12-0ubuntu0.16.04.1-b12
+user.dir=/home/czakot/NetBeansProjects/RentACar/src/rentacar
+os.name=Linux
+os.arch=amd64
+os.version=4.15.0-43-generic
+derby.system.home=data
+Az adatbázis-osztálybetöltő elindult - derby.database.classpath=''

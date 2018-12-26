@@ -5,12 +5,19 @@
  */
 package rentacar.backend.dao;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.derby.jdbc.EmbeddedDriver;
 import rentacar.backend.entities.Car;
 
 /**
@@ -19,13 +26,15 @@ import rentacar.backend.entities.Car;
  */
 public class DaoManager {
 
-    private static final String DRIVER = "org.apache.derby.jdbc.EmbeddedDriver";
-
+    /** Az adatbáziskapcsolódáshoz szükséges adatok */
     private static final String PROTOCOL = "jdbc:derby:";
     private static final String DATABASE = "rentacarDB";
     
     private static final String USER = "username";
     private static final String PASSWORD = "password";
+    
+    private static final String SCRIPT_PATH = "init.sql";
+    private static final String DELIMITER = "(;(\r)?\n)|(--\n)";
 
     private static Connection connection;
     
@@ -33,7 +42,8 @@ public class DaoManager {
 
 
     public DaoManager() {
-                carDao = new CarDao(connection);
+        initDB();
+        carDao = new CarDao(connection);
     }
     
     public List<Car> listCars() {
@@ -50,29 +60,15 @@ public class DaoManager {
     findAll
     listCarsAvailable4Rent
     */    
-/*
-    private void open() {
-        try {
-            DriverManager.registerDriver(new org.apache.derby.jdbc.EmbeddedDriver());
-            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-            con = DriverManager.getConnection(URL, USER, PASSWORD);
-        } catch (SQLException | ClassNotFoundException ex) {
-            Logger.getLogger(DaoManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-*/
+
     private void openConnection(){
         try {
-            // move this line into the constructor, it is enough to call once to implicitly register the driver
-            // anyway in Java 8 and above it is not neccessery at all
-//            Class.forName(new DRIVER)/*.newInstance()*/;
             connection = DriverManager.getConnection(PROTOCOL + DATABASE + ";create=true", USER, PASSWORD);
-        } catch (SQLException /*| ClassNotFoundException*/ ex) {
+        } catch (SQLException ex) {
             Logger.getLogger(DaoManager.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-
     private void closeConnection(){
         try {
             if ((connection != null) && !connection.isClosed()) {
@@ -82,26 +78,55 @@ public class DaoManager {
             Logger.getLogger(DaoManager.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-/*    
-    private void closeConnection() {
+    private void initDB() {
         try {
-            if ((connection != null) && !connection.isClosed()) {
-                connection.close();
-            }
+            DriverManager.registerDriver(new EmbeddedDriver()); // DRIVER: org.apache.derby.jdbc.EmbeddedDriver
         } catch (SQLException ex) {
             Logger.getLogger(DaoManager.class.getName()).log(Level.SEVERE, null, ex);
         }
+        System.setProperty("derby.system.home", "data");
+
+        openConnection();
+        if (!exist_DB(USER)) {
+            executeScript();
+        }
+        closeConnection();
     }
-    
-    private void closeConnection() {
+
+    private Boolean exist_DB(String schemaName){
+            Statement stmnt;
+            ResultSet rs;
         try {
-        DriverManager.getConnection(PROTOCOL + ";shutdown=true");
-        } catch (SQLException sqle) {
-            if ( sqle.getErrorCode() == 50000) {
-                System.err.println("Normal DB leállás: " + sqle.getCause());
+            stmnt = connection.createStatement();
+            rs = stmnt.executeQuery("SELECT COUNT(*) FROM SYS.SYSSCHEMAS " +
+                    "WHERE SCHEMANAME = \'" + schemaName.toUpperCase() + "\'");
+            rs.next();
+            return rs.getInt(1) > 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    private void executeScript() {
+        Scanner scanner;
+        try {
+            scanner = new Scanner(new FileInputStream(new File(SCRIPT_PATH)));
+            scanner.useDelimiter(DELIMITER);
+            try(Statement st = connection.createStatement()){
+                while (scanner.hasNext()) {
+                    String line = scanner.next();
+                    if (line.contains(";")) {
+                        line = line.replace(";", "");
+                    }
+                    st.execute(line);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(DaoManager.class.getName()).log(Level.SEVERE, null, ex);
             }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(DaoManager.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-*/
 }
 
