@@ -41,7 +41,7 @@ public class CarDao extends GenericDao<Car, String> implements ICarDao {
             statement.setInt(5, entity.getDailyRentalFee());
             statement.setDate(6, java.sql.Date.valueOf(entity.getLastService()));
             statement.setBoolean(7, entity.getInService());
-            statement.setInt(8, entity.getPhoto());
+            statement.setBoolean(8, entity.getPhoto());
             statement.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(CarDao.class.getName()).log(Level.SEVERE, null, ex);
@@ -63,7 +63,7 @@ public class CarDao extends GenericDao<Car, String> implements ICarDao {
             statement.setInt(1, entity.getDailyRentalFee());
             statement.setDate(2, java.sql.Date.valueOf(entity.getLastService()));
             statement.setBoolean(3, entity.getInService());
-            statement.setInt(4, entity.getPhoto());
+            statement.setBoolean(4, entity.getPhoto());
             statement.setString(5, entity.getNumberPlate());
             statement.executeUpdate();
         } catch (SQLException ex) {
@@ -146,7 +146,7 @@ public class CarDao extends GenericDao<Car, String> implements ICarDao {
         car.setDailyRentalFee(resultSet.getInt("DAILY_RENTAL_FEE"));
         car.setLastService((resultSet.getDate("LAST_SERVICE")).toLocalDate());
         car.setInService(resultSet.getBoolean("IN_SERVICE"));
-        car.setPhoto(resultSet.getInt("PHOTO"));
+        car.setPhoto(resultSet.getBoolean("PHOTO"));
         return car;
     }
 }

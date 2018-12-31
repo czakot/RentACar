@@ -20,7 +20,7 @@ public class Car {
     private int dailyRentalFee;
     private LocalDate lastService;
     private Boolean inService;
-    private int photo;
+    private Boolean photo;
 
     public Car() {
     }
@@ -30,7 +30,7 @@ public class Car {
     }
 
     public Car(String numberPlate, String make, String model, int yearOfManufacturing, 
-               int dailyRentalFee, LocalDate lastService, Boolean inService, int photo) {
+               int dailyRentalFee, LocalDate lastService, Boolean inService, Boolean photo) {
         this.numberPlate = numberPlate;
         this.make = make;
         this.model = model;
@@ -97,11 +97,11 @@ public class Car {
         this.inService = inService;
     }
 
-    public int getPhoto() {
+    public Boolean getPhoto() {
         return photo;
     }
 
-    public void setPhoto(int photo) {
+    public void setPhoto(Boolean photo) {
         this.photo = photo;
     }
 

@@ -59,7 +59,14 @@ public class DaoManager {
     update
     findAll
     listCarsAvailable4Rent
-    */    
+    */ 
+    public void closeDB() {
+        try {
+            DriverManager.getConnection(PROTOCOL + ";shutdown=true", USER, PASSWORD);
+        } catch (SQLException ex) {
+            // ignore ex: Logger.getLogger(DaoManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     private void openConnection(){
         try {
@@ -78,13 +85,14 @@ public class DaoManager {
             Logger.getLogger(DaoManager.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
     private void initDB() {
+        System.setProperty("derby.system.home", "data");
         try {
             DriverManager.registerDriver(new EmbeddedDriver()); // DRIVER: org.apache.derby.jdbc.EmbeddedDriver
         } catch (SQLException ex) {
             Logger.getLogger(DaoManager.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.setProperty("derby.system.home", "data");
 
         openConnection();
         if (!exist_DB(USER)) {

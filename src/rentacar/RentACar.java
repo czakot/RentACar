@@ -5,6 +5,11 @@
  */
 package rentacar;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.UnsupportedLookAndFeelException;
 import rentacar.frontend.GuiManager;
 
 /**
@@ -18,7 +23,20 @@ public class RentACar {
      * @throws java.lang.Exception
      */
     public static void main(String[] args) throws Exception {
-        
+
+        try {
+//            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+            for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(RentACar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         GuiManager.start();
     }
 }

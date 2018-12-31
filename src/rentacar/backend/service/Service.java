@@ -23,6 +23,10 @@ public class Service implements IService {
     public Service() {
         daoManager = new DaoManager();
     }
+    
+    public void closeDB() {
+        daoManager.closeDB();
+    }
 
     @Override
     public List<Car> listCars() {

@@ -33,4 +33,8 @@ public class GuiManager {
     public static List<Car> listCars() {
         return service.listCars();
     }
+    
+    public static void closeDB() {
+        service.closeDB();
+    }
 }
