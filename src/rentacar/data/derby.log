@@ -1,19 +1,19 @@
 ----------------------------------------------------------------
-Mon Dec 31 12:55:56 CET 2018:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0168-041e-d715-0000002eefaa 
-on database directory /home/czakot/NetBeansProjects/RentACar/src/rentacar/data/rentacarDB with class loader sun.misc.Launcher$AppClassLoader@3d4eac69 
-Loaded from file:/home/czakot/NetBeansProjects/RentACar/src/rentacar/derbyjars/derby.jar
-java.vendor=Azul Systems, Inc.
-java.runtime.version=1.8.0_144-b01
+Mon Dec 31 20:33:25 CET 2018:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0168-05c1-adad-0000002eefaa 
+on database directory /home/czakot/NetBeansProjects/RentACar/src/rentacar/data/rentacarDB with class loader sun.misc.Launcher$AppClassLoader@7f31245a 
+Loaded from file:/home/czakot/NetBeansProjects/RentACar/src/rentacar/utility/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_191-8u191-b12-0ubuntu0.16.04.1-b12
 user.dir=/home/czakot/NetBeansProjects/RentACar/src/rentacar
 os.name=Linux
 os.arch=amd64
-os.version=3.13.0-164-generic
+os.version=4.15.0-43-generic
 derby.system.home=data
 Database Class Loader started - derby.database.classpath=''
 ----------------------------------------------------------------
-Mon Dec 31 12:56:26 CET 2018: Shutting down Derby engine
+Mon Dec 31 20:34:32 CET 2018: Shutting down Derby engine
 ----------------------------------------------------------------
-Mon Dec 31 12:56:27 CET 2018:
-Shutting down instance a816c00e-0168-041e-d715-0000002eefaa on database directory /home/czakot/NetBeansProjects/RentACar/src/rentacar/data/rentacarDB with class loader sun.misc.Launcher$AppClassLoader@3d4eac69 
+Mon Dec 31 20:34:32 CET 2018:
+Shutting down instance a816c00e-0168-05c1-adad-0000002eefaa on database directory /home/czakot/NetBeansProjects/RentACar/src/rentacar/data/rentacarDB with class loader sun.misc.Launcher$AppClassLoader@7f31245a 
 ----------------------------------------------------------------

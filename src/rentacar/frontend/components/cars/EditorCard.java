@@ -24,11 +24,12 @@ public class EditorCard extends NewCard {
     
     void setEditorContent(String[] text) {
         for (int i = 0; i < 5; i++) {
-            ((JTextField)(content.getComponent(i))).setText(text[i]);
+            firstFiveText[i].setText(text[i]);
         }
-        ((JButton)(content.getComponent(5))).setText(text[5]);
-        ((JCheckBox)(content.getComponent(6))).setText(text[6]);
-        ((JButton)(content.getComponent(7))).setText("Fotó választás");
+//        lastService.setText(text[5]);
+        inService.setText(text[6]);
+        inService.setSelected(text[6].equals("igen"));
+        photoSelector.setText("Fotó választás");
         
         resizePhotoHolder();
         if (text[7].equals("van")) {

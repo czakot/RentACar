@@ -14,19 +14,19 @@ import javax.swing.JTextField;
  */
 public class DetailsCard extends BaseCard {
     
+    JTextField[] textField;
+    
     @Override
     protected void setupContent() {
+        textField = new JTextField[8];
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 0.5;
-        gbc.gridy = 0;
         gbc.gridx = 1;
-        JTextField textField;
-        for (int i = 0; i < 7;++i) {
-            textField = new JTextField("");
-            disableEditingOnTextField(textField);
-            content.add(textField,gbc);
-            gbc.gridy++;
+        for (gbc.gridy = 0; gbc.gridy < 8;gbc.gridy++) {
+            textField[gbc.gridy] = new JTextField("");
+            disableEditingOnTextField(textField[gbc.gridy]);
+            content.add(textField[gbc.gridy],gbc);
         }
 
         placeTitlesOnContent();
@@ -34,18 +34,15 @@ public class DetailsCard extends BaseCard {
     
     String[] getDetailsContent() {
         String[] text = new String[8];
-        for (int i = 0; i < 5; i++) {
-            text[i] = ((JTextField)(content.getComponent(i))).getText();
+        for (int i = 0; i < 8; i++) {
+            text[i] = textField[i].getText();
         }
-        text[5] = ((JTextField)(content.getComponent(5))).getText();
-        text[6] = ((JTextField)(content.getComponent(6))).getText();
-        text[7] = ((photo.getComponentCount() == 0) ? "nincs" : "van");
         return text;
     }
     
     void refreshDetailsContent(String[] details) {
-        for (int i = 0; i < 7;++i) {
-            ((JTextField)(content.getComponent(i))).setText(details[i]);
+        for (int i = 0; i < 8;++i) {
+            textField[i].setText(details[i]);
         }
         
         resizePhotoHolder();

@@ -30,7 +30,7 @@ public class CarsList extends JPanel {
     public CarsList(CarsPanel carsPanel) {
         this.carsPanel = carsPanel;
         setLayout(new BorderLayout());
-        setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
+        setBorder(BorderFactory.createEmptyBorder(4, 4, 3, 4));
         
         Object[][] cars = getCars();
         CarsListTableModel tableModel = new CarsListTableModel(cars, COLUMN_NAMES);

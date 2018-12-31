@@ -41,7 +41,7 @@ public class CarDetails extends JPanel {
         this.carsPanel = carsPanel;
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createCompoundBorder(
-                    BorderFactory.createEmptyBorder(0, 0, 0, 1),
+                    BorderFactory.createEmptyBorder(0, 4, 0, 4),
                     BorderFactory.createTitledBorder(
                       BorderFactory.createLineBorder(Color.GRAY),"")));
         

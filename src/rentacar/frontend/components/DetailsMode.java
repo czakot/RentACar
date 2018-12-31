@@ -13,7 +13,7 @@ public enum DetailsMode {
     DETAILS("Kiválasztott autó adatai"),
     NEW("Új autó felvétele"),
     EDITOR("Kiválasztott autó adatainak módosítása"),
-    EMPTY("");
+    EMPTY(" ");
     private final String title;
 
     private DetailsMode(String title) {
