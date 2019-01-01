@@ -13,11 +13,11 @@ import javax.swing.JTextField;
  * @author czakot
  */
 public class DetailsCard extends BaseCard {
-    
+
     JTextField[] textField;
     
-    @Override
-    protected void setupContent() {
+    public DetailsCard(CarDetails carDetails) {
+        super(carDetails);
         textField = new JTextField[8];
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -28,8 +28,6 @@ public class DetailsCard extends BaseCard {
             disableEditingOnTextField(textField[gbc.gridy]);
             content.add(textField[gbc.gridy],gbc);
         }
-
-        placeTitlesOnContent();
     }
     
     String[] getDetailsContent() {
@@ -45,9 +43,6 @@ public class DetailsCard extends BaseCard {
             textField[i].setText(details[i]);
         }
         
-        resizePhotoHolder();
-        if (details[7].equals("van")) {
-            loadInPhoto(details[0]);
-        }
+        presentPhoto(details[7].equals("van"), fromSelectedJpgs(details[0]));
     }
 }

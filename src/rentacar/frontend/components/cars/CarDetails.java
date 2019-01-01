@@ -9,8 +9,6 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.CompoundBorder;
@@ -48,10 +46,9 @@ public class CarDetails extends JPanel {
         emptyCard = new JPanel(new BorderLayout());
         emptyCard.add(new JLabel("Nincs kiválasztott vagy megjeleníthető elem",JLabel.CENTER),BorderLayout.CENTER);
         
-        newCard = new NewCard();
-        newCard.setToolTipForNumberPlate("Rendszám CCCNNN (C: betű, N: számjegy) alakban");
-        editorCard = new EditorCard();
-        detailsCard = new DetailsCard();
+        newCard = new NewCard(this);
+        editorCard = new EditorCard(this);
+        detailsCard = new DetailsCard(this);
         
         cardsLayout = new CardLayout();
         cards = new JPanel(cardsLayout);

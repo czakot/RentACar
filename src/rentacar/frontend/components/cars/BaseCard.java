@@ -21,20 +21,22 @@ import rentacar.utility.ShrinkIcon;
  *
  * @author czakot
  */
-public abstract class BaseCard extends JPanel{
+public class BaseCard extends JPanel{
 
-    JPanel content;
-    JPanel photo;
-    JPanel buttons;
+    final JPanel content;
+    final JPanel photo;
+    final CarDetails carDetails;
     final static String[] TITLE_STRINGS = {"Rendszám:","Márka:","Típus:","Évjárat:","Bérleti díj/nap:","Utolsó szerviz:","Most szervizben:","Fotó:"};
     final static Color BACKGROUND_DISABLED = new Color(214, 217, 223);
     final static Color BACKGROUND_ENABLED = new Color(255, 255, 255);
+    final static String fileSeparator = System.getProperty("file.separator");
     
-    public BaseCard() {
+    public BaseCard(CarDetails carDetails) {
+        this.carDetails = carDetails;
         setLayout(new FlowLayout(FlowLayout.LEFT));
         
-        content = new JPanel(new GridBagLayout());
-        setupContent();
+        content = new JPanel(new GridBagLayout()) ;
+        placeTitlesOnContent();
         
         photo = new JPanel(new BorderLayout());
         photo.setBorder(BorderFactory.createEmptyBorder(0, 25, 0, 0));
@@ -43,12 +45,11 @@ public abstract class BaseCard extends JPanel{
         add(photo);
     }
 
-    abstract void setupContent();
-    
     void disableEditingOnTextField(JTextField textField) {
         textField.setOpaque(true);
         textField.setBackground(BACKGROUND_DISABLED);
-        textField.setEditable(false);
+//        textField.setEditable(false);
+        textField.setFocusable(false);
     }
 
     void placeTitlesOnContent() {
@@ -64,15 +65,22 @@ public abstract class BaseCard extends JPanel{
     void modifyContentEditables() {
     }
     
-    void resizePhotoHolder() {
+    void presentPhoto(Boolean doIt,String photoPath) {
+//          StretchIcon image = new StretchIcon("photos/" + details[0].toLowerCase() + ".jpg");
+//            ShrinkIcon image = new ShrinkIcon("photos_selected/" + numberPlate.toLowerCase() + ".jpg",true);
         Dimension photoPreferredSize = content.getSize();
         photoPreferredSize.width = photoPreferredSize.height * 4 / 3;
         photo.setPreferredSize(photoPreferredSize);        
+        if (doIt) {
+            ShrinkIcon image = new ShrinkIcon(photoPath,true);
+            photo.add(new JLabel("",image,JLabel.CENTER),BorderLayout.CENTER);
+        } else {
+            photo.removeAll();
+        }
+        carDetails.validate();
     }
     
-    void loadInPhoto(String numberPlate) {
-//          StretchIcon image = new StretchIcon("photos/" + details[0].toLowerCase() + ".jpg");
-            ShrinkIcon image = new ShrinkIcon("photos/" + numberPlate.toLowerCase() + ".jpg",true);
-            photo.add(new JLabel("",image,JLabel.CENTER),BorderLayout.CENTER);
+    String fromSelectedJpgs(String filename) {
+        return "photos_selected" + fileSeparator + filename.toLowerCase() + ".jpg";
     }
 }
