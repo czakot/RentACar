@@ -8,9 +8,11 @@ package rentacar.frontend.components.cars;
 import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.Date;
-import java.util.Formatter;
-import java.util.Properties;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JTextField;
@@ -42,8 +44,7 @@ public class NewCard extends BaseCard {
         }
         
         // gbc.gridy = 5;
-//        lastService = new JButton("éééé-hh-nn");
-        lastService = createJDatePicker();
+        lastService = new JDatePicker(new Date());
         content.add(lastService,gbc);
 
         gbc.gridy++;
@@ -65,6 +66,13 @@ public class NewCard extends BaseCard {
         modifyContentEditables();
     }
     
+    @Override
+    void modifyContentEditables() {
+        LocalDate localDate = LocalDate.now().plusDays(1);
+        lastService.getModel().setDate(localDate.getYear(),
+                                       localDate.getMonthValue()-1,
+                                       localDate.getDayOfMonth());
+    }
     void setToolTipForNumberPlate(String toolTip) {
         ((JTextField)(content.getComponent(0))).setToolTipText(toolTip);
     }
@@ -76,14 +84,5 @@ public class NewCard extends BaseCard {
 //        lastService.setText("éééé-hh-nn");
         inService.setSelected(false);
         photo.removeAll();
-    }
-
-    private JDatePicker createJDatePicker() {
-        UtilDateModel dateModel = new UtilDateModel();
-        dateModel.setSelected(true);
-        dateModel.setDate(2018, 12, 31);
-        JDatePanel datePanel = new JDatePanel(dateModel);
-        JDatePicker datePicker = new JDatePicker(dateModel);
-        return datePicker;
     }
 }

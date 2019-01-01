@@ -5,8 +5,6 @@
  */
 package rentacar.frontend.components.cars;
 
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JTextField;
 
 /**
@@ -26,7 +24,10 @@ public class EditorCard extends NewCard {
         for (int i = 0; i < 5; i++) {
             firstFiveText[i].setText(text[i]);
         }
-//        lastService.setText(text[5]);
+        String[] dateElements = text[5].split("-");
+        lastService.getModel().setYear(Integer.valueOf(dateElements[0]));
+        lastService.getModel().setMonth(Integer.valueOf(dateElements[1]));
+        lastService.getModel().setDay(Integer.valueOf(dateElements[2]));
         inService.setText(text[6]);
         inService.setSelected(text[6].equals("igen"));
         photoSelector.setText("Fotó választás");
