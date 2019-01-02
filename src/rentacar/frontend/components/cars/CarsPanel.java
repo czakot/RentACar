@@ -70,4 +70,23 @@ public class CarsPanel extends JPanel {
         carDetails.discard();
         enableListNewModify();
     }
+    
+    void saveNewOrEditor() {
+        NewCard card = carDetails.getTopCard(); // vagy EditorCard
+        String[] newCar = card.getValues();
+
+        DetailsMode mode = DetailsMode.NEW;
+        if (card instanceof EditorCard) {
+            mode = DetailsMode.EDITOR;
+        }
+        
+        CarValidateAndStorePersistent validateAndStore = new CarValidateAndStorePersistent(newCar, mode, this);
+        if (validateAndStore.isSuccessful()) {
+            carsButtons.disableSaveDiscard();
+            carDetails.switchMode(DetailsMode.EMPTY);
+            card.reset();
+            carsList.updateCarsTable();
+            carsButtons.enableNew();
+        }
+    }
 }

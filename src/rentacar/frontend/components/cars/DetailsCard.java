@@ -14,7 +14,7 @@ import javax.swing.JTextField;
  */
 public class DetailsCard extends BaseCard {
 
-    JTextField[] textField;
+    private final JTextField[] textField;
     
     public DetailsCard(CarDetails carDetails) {
         super(carDetails);
@@ -30,7 +30,7 @@ public class DetailsCard extends BaseCard {
         }
     }
     
-    String[] getDetailsContent() {
+    String[] getValues() {
         String[] text = new String[8];
         for (int i = 0; i < 8; i++) {
             text[i] = textField[i].getText();
@@ -38,11 +38,11 @@ public class DetailsCard extends BaseCard {
         return text;
     }
     
-    void refreshDetailsContent(String[] details) {
+    void refreshValues(String[] values) {
         for (int i = 0; i < 8;++i) {
-            textField[i].setText(details[i]);
+            textField[i].setText(values[i]);
         }
         
-        presentPhoto(details[7].equals("van"), fromSelectedJpgs(details[0]));
+        presentPhoto(values[7].equals("van"), fromSelectedJpgs(values[0]));
     }
 }

@@ -8,6 +8,7 @@ package rentacar.frontend.components.cars;
 import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.time.LocalDate;
@@ -19,6 +20,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.SwingConstants;
 import javax.swing.ToolTipManager;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.MaskFormatter;
 import org.jdatepicker.*;
 import rentacar.utility.MyFormattedTextField;
@@ -30,19 +32,23 @@ import rentacar.utility.MyTextField;
  */
 public class NewCard extends BaseCard {
 
-    MyFormattedTextField numberPlate;
-    MyTextField make;
-    MyTextField model;
-    MyFormattedTextField yearOfManufacturing;
-    MyFormattedTextField dailyRentalFee;
-    JDatePicker lastService;
-    JCheckBox inService;
-    JButton photoSelector;
-    JFileChooser fileChooser = new JFileChooser();
+    final MyFormattedTextField numberPlate;
+    final MyTextField make;
+    final MyTextField model;
+    final MyFormattedTextField yearOfManufacturing;
+    final MyFormattedTextField dailyRentalFee;
+    final JDatePicker lastService;
+    final JCheckBox inService;
+    final JButton photoSelector;
+    final JFileChooser fileChooser;
+    String choosenPhotoFullPath;
+    final static String SOURCES_START_PATH = System.getProperty("user.dir") + FILE_SEPARATOR + "photos_container";
     
     public NewCard(CarDetails carDetails) {
         super(carDetails);
-        fileChooser = new JFileChooser(System.getProperty("user.dir") + fileSeparator + "photos_container");
+        fileChooser = new JFileChooser();
+        fileChooser.setFileFilter(new FileNameExtensionFilter("JPG formátumú képek", "jpg", "jpeg"));
+        
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 0.5;
@@ -114,6 +120,7 @@ public class NewCard extends BaseCard {
         setDatePickerWithLocaldate(lastService, LocalDate.now().plusDays(1));
         inService.setSelected(false);
         photo.removeAll();
+        choosenPhotoFullPath = "";
     }
     
     private void setDatePickerWithLocaldate(JDatePicker datePicker, LocalDate localDate) {
@@ -135,14 +142,20 @@ public class NewCard extends BaseCard {
     }
     
     private void photoSelection(ActionEvent e) {
+        fileChooser.setCurrentDirectory(new File(SOURCES_START_PATH));
         int returnValue = fileChooser.showDialog(null, "Fotó kiválasztása");
         if (returnValue == JFileChooser.APPROVE_OPTION) {
             try {
-            presentPhoto(Boolean.TRUE, fileChooser.getSelectedFile().getCanonicalFile().toString());
+            choosenPhotoFullPath = fileChooser.getSelectedFile().getCanonicalFile().toString();
             } catch (IOException ex) {
                 Logger.getLogger(NewCard.class.getName()).log(Level.SEVERE, null, ex);
             }
+            presentPhoto(Boolean.TRUE, choosenPhotoFullPath);
         }
-        repaint();
+        this.getTopLevelAncestor().validate();
+    }
+    
+    String[] getValues() {
+        return null;
     }
 }

@@ -8,6 +8,7 @@ package rentacar.frontend.components.cars;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Component;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -32,16 +33,14 @@ public class CarDetails extends JPanel {
     private DetailsMode modeToReturn;
     final static String[] TITLE_STRINGS = {"Rendszám:","Márka:","Típus:","Évjárat:","Bérleti díj/nap:","Utolsó szerviz:","Most szervizben:","Fotó:"};
     final static Color BACKGROUND_DISABLED = new Color(214, 217, 223);
-    final static Color BACKGROUND_ENABLED = new Color(255, 255, 255);
         
     
     public CarDetails(CarsPanel carsPanel) {
         this.carsPanel = carsPanel;
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createCompoundBorder(
-                    BorderFactory.createEmptyBorder(0, 4, 0, 4),
-                    BorderFactory.createTitledBorder(
-                      BorderFactory.createLineBorder(Color.GRAY),"")));
+                      BorderFactory.createEmptyBorder(0, 4, 0, 4),
+                      BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY),"")));
         
         emptyCard = new JPanel(new BorderLayout());
         emptyCard.add(new JLabel("Nincs kiválasztott vagy megjeleníthető elem",JLabel.CENTER),BorderLayout.CENTER);
@@ -74,7 +73,7 @@ public class CarDetails extends JPanel {
                 break;
             case EDITOR:
                 modeToReturn = this.mode;
-                editorCard.setEditorContent(detailsCard.getDetailsContent());
+                editorCard.setEditorContent(detailsCard.getValues());
                 break;
             default:
                 throw new AssertionError();
@@ -91,7 +90,7 @@ public class CarDetails extends JPanel {
             return;
         }
         
-        detailsCard.refreshDetailsContent(details);
+        detailsCard.refreshValues(details);
         switchMode(DetailsMode.DETAILS);
         carsPanel.enableModifyCarButton();
     }
@@ -107,4 +106,16 @@ public class CarDetails extends JPanel {
         }
         switchMode(modeToReturn);
     }
+
+    public NewCard getTopCard() {
+        NewCard card = null;
+        for (Component component : cards.getComponents()) {
+            if (component.isVisible()) {
+                card = (NewCard)component;
+                break;
+            }
+        }
+        return card;
+    }
 }
+

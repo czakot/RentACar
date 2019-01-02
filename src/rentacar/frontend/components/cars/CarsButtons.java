@@ -50,6 +50,12 @@ public class CarsButtons extends JPanel {
         save = new JButton("Mentés");
         save.setVisible(false);
         save.setEnabled(false);
+        save.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                carsPanel.saveNewOrEditor();
+            }
+        });
         add(save);
         
         discard = new JButton("Eldobás");
@@ -70,6 +76,10 @@ public class CarsButtons extends JPanel {
     
     void disableModify() {
         modifyCar.setEnabled(false);
+    }
+    
+    void enableNew() {
+        newCar.setEnabled(true);
     }
     
     void enableNewModify() {

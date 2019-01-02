@@ -29,7 +29,7 @@ public class BaseCard extends JPanel{
     final static String[] TITLE_STRINGS = {"Rendszám:","Márka:","Típus:","Évjárat:","Bérleti díj/nap:","Utolsó szerviz:","Most szervizben:","Fotó:"};
     final static Color BACKGROUND_DISABLED = new Color(214, 217, 223);
     final static Color BACKGROUND_ENABLED = new Color(255, 255, 255);
-    final static String fileSeparator = System.getProperty("file.separator");
+    final static String FILE_SEPARATOR = System.getProperty("file.separator");
     
     public BaseCard(CarDetails carDetails) {
         this.carDetails = carDetails;
@@ -66,8 +66,7 @@ public class BaseCard extends JPanel{
     }
     
     void presentPhoto(Boolean doIt,String photoPath) {
-//          StretchIcon image = new StretchIcon("photos/" + details[0].toLowerCase() + ".jpg");
-//            ShrinkIcon image = new ShrinkIcon("photos_selected/" + numberPlate.toLowerCase() + ".jpg",true);
+//            StretchIcon image = new StretchIcon(photoPath,true);
         Dimension photoPreferredSize = content.getSize();
         photoPreferredSize.width = photoPreferredSize.height * 4 / 3;
         photo.setPreferredSize(photoPreferredSize);        
@@ -81,6 +80,6 @@ public class BaseCard extends JPanel{
     }
     
     String fromSelectedJpgs(String filename) {
-        return "photos_selected" + fileSeparator + filename.toLowerCase() + ".jpg";
+        return "photos_selected" + FILE_SEPARATOR + filename.toLowerCase() + ".jpg";
     }
 }

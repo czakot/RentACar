@@ -44,19 +44,19 @@ public class CarsList extends JPanel {
 //        carsPanel.refreshCarDetails(getSelectedCarDetails());
     }
     
-    private String[] getSelectedCarDetails() {
+    private String[] getSelectedCarValues() {
         final int row = carsTable.getSelectedRow();
         if (row < 0) {
             return null;
         }
         
         final int columns = carsTable.getColumnCount();
-        String[] selectedCarDetails = new String[columns];
+        String[] selectedCarValues = new String[columns];
         
         for (int column = 0; column < columns;++column) {
-            selectedCarDetails[column] = carsTable.getValueAt(row,column).toString();
+            selectedCarValues[column] = carsTable.getValueAt(row,column).toString();
         }
-        return selectedCarDetails;
+        return selectedCarValues;
     }
     
     private Object[][] getCars() {
@@ -81,17 +81,19 @@ public class CarsList extends JPanel {
     private void actionRowSelectionChanged(ListSelectionEvent event) {
         if (event.getValueIsAdjusting()) {
             selected = carsTable.getValueAt(carsTable.getSelectedRow(),0).toString(); // kiválasztott rendszám
-            carsPanel.refreshCarDetails(getSelectedCarDetails());
+            carsPanel.refreshCarDetails(getSelectedCarValues());
         }
     }
     
-    private void updateCarsTable() {
+    void updateCarsTable() {
         CarsListTableModel tableModel = (CarsListTableModel)(carsTable.getModel());
         tableModel.setRowCount(0);
         Object[][] carsObjArray = getCars();
         for (int i = 0; i < carsObjArray.length; ++i) {
             tableModel.addRow(carsObjArray[i]);
         }
+        enableRowSelectionChange();
+        
         if (selected != null) {
             for (int i = 0; i < carsTable.getRowCount(); i++) {
                 if (selected.equals(carsTable.getValueAt(i, 0).toString())) {
