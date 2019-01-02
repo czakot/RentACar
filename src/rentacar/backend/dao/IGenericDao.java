@@ -33,7 +33,15 @@ public interface IGenericDao<E, K> {
     void update(E entity);
 
     /**
-     * Entitások plédányainak visszaadása a megadott osztály szerint
+     * Entitás példány visszaadása megadott osztály és kulcs alapján
+     *
+     * @param key
+     * @return
+     */
+    E findById(K key);
+
+    /**
+     * Entitások példányainak visszaadása a megadott osztály szerint
      *
      * @return
      */

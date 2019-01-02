@@ -29,33 +29,17 @@ public class CarsButtons extends JPanel {
         setLayout(new FlowLayout(FlowLayout.LEFT));
         
         newCar = new JButton("Új autó felvétele");
-        newCar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                carsPanel.createNewCar();
-            }
-        });
+        newCar.addActionListener(this::createNewCar);
         add(newCar);
         
         modifyCar = new JButton("Autó adatainak módosítása");
         modifyCar.setEnabled(false);
-        modifyCar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                carsPanel.editSelectedCar();
-            }
-        });
+        modifyCar.addActionListener(this::editSelectedCar);
         add(modifyCar);
         
         save = new JButton("Mentés");
         save.setVisible(false);
         save.setEnabled(false);
-        save.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                carsPanel.saveNewOrEditor();
-            }
-        });
         add(save);
         
         discard = new JButton("Eldobás");
@@ -68,6 +52,22 @@ public class CarsButtons extends JPanel {
             }
         });
         add(discard);
+    }
+    
+    private void createNewCar(ActionEvent e) {
+        save.addActionListener(carsPanel::saveNew);
+        carsPanel.createNewCar();
+    }
+    
+    private void editSelectedCar(ActionEvent e) {
+        save.addActionListener(carsPanel::saveEdited);
+        carsPanel.editSelectedCar();
+    }
+    
+    void removeSaveActionListeners() {
+        for (ActionListener actionListener : save.getActionListeners()) {
+            save.removeActionListener(actionListener);
+        }
     }
     
     void enableModify() {

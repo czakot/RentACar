@@ -46,17 +46,29 @@ public class DaoManager {
         carDao = new CarDao(connection);
     }
     
+    public Car getCar(String numberPlate) {
+        openConnection();
+        carDao.setConnection(connection);
+        Car car = carDao.findById(numberPlate);
+        closeConnection();
+        return car;
+    }
+    
+
     public List<Car> listCars() {
         openConnection();
         carDao.setConnection(connection);
-        List<Car> Cars = carDao.findAll();
+        List<Car> cars = carDao.findAll();
         closeConnection();
-        return Cars;
+        return cars;
     }
+    
+    public 
     
 /*
     save
     update
+    findById
     findAll
     listCarsAvailable4Rent
     */ 

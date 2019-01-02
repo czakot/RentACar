@@ -5,7 +5,9 @@
  */
 package rentacar.frontend;
 
+import java.time.LocalDate;
 import java.util.List;
+import rentacar.backend.entities.BareCar;
 import rentacar.backend.entities.Car;
 import rentacar.backend.service.Service;
 import rentacar.frontend.windows.RentACarWindowFrame;
@@ -36,5 +38,13 @@ public class GuiManager {
     
     public static void closeDB() {
         service.closeDB();
+    }
+    
+    public static Boolean storeCar(BareCar bareCar) {
+        return service.addCar(bareCar);
+    }
+    
+    public static Boolean updateCar(BareCar bareCar) {
+        return service.modifyCar(bareCar);
     }
 }

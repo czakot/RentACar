@@ -7,6 +7,7 @@ package rentacar.backend.service;
 
 import java.time.LocalDate;
 import java.util.List;
+import rentacar.backend.entities.BareCar;
 import rentacar.backend.entities.Car;
 import rentacar.backend.entities.Rent;
 import rentacar.backend.entities.Customer;
@@ -16,6 +17,14 @@ import rentacar.backend.entities.Customer;
  * @author czakot
  */
 public interface IService {
+
+    /**
+     * Egy autó lekérdezése rendszám (kulcs) alapján
+     * 
+     * @param numberPlate
+     * @return 
+     */
+    Car getCar(String numberPlate);
 
     /**
      * Autók listázása
@@ -34,17 +43,10 @@ public interface IService {
     /**
      * Új autó felvétele
      * 
-     * @param numberPlate
-     * @param make
-     * @param model
-     * @param year
-     * @param dailyRentalFee
-     * @param dateOfLastService
-     * @param inService
-     * @param photo
-     * @throws rentacar.backend.service.ServiceException
+     * @param bareCar
+     * @return
      */
-    void addCar(String numberPlate, String make, String model, int year, int dailyRentalFee, LocalDate dateOfLastService, Boolean inService, int photo) throws ServiceException;
+    Boolean addCar(BareCar bareCar);
     
     /**
      * Autó módosítható adatainak megváltoztatása

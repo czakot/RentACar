@@ -37,6 +37,9 @@ public abstract class GenericDao<E, K> implements IGenericDao<E, K> {
     public abstract void update(E entity);
 
     @Override
+    public abstract E findById(K key);
+
+    @Override
     public abstract List<E> findAll();
 
     final void close(PreparedStatement statement){

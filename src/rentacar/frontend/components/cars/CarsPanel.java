@@ -5,8 +5,11 @@
  */
 package rentacar.frontend.components.cars;
 
+import java.awt.event.ActionEvent;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
+import rentacar.backend.entities.BareCar;
+import rentacar.frontend.GuiManager;
 import rentacar.frontend.components.DetailsMode;
 
 /**
@@ -71,22 +74,36 @@ public class CarsPanel extends JPanel {
         enableListNewModify();
     }
     
-    void saveNewOrEditor() {
-        NewCard card = carDetails.getTopCard(); // vagy EditorCard
-        String[] newCar = card.getValues();
+    void saveNew(ActionEvent e) {
+        NewCard newCard = carDetails.getTopCard();
+        BareCar newCar = newCard.getBareCar();
 
-        DetailsMode mode = DetailsMode.NEW;
-        if (card instanceof EditorCard) {
-            mode = DetailsMode.EDITOR;
+        carsButtons.disableSaveDiscard();
+        if (GuiManager.storeCar(newCar)) {
+            resetCarGui(newCard);
+        } else {
+            carsButtons.enableSaveDiscard();
         }
+    }
+
+    void saveEdited(ActionEvent e) {
+        NewCard editorCard = carDetails.getTopCard();
+        BareCar editedCar = editorCard.getBareCar();
+
+        carsButtons.disableSaveDiscard();
+        if (GuiManager.u) {
+            resetCarGui(newCard);
+        } else {
+            carsButtons.enableSaveDiscard();
+        }
+    }
         
-        CarValidateAndStorePersistent validateAndStore = new CarValidateAndStorePersistent(newCar, mode, this);
-        if (validateAndStore.isSuccessful()) {
-            carsButtons.disableSaveDiscard();
+        private void resetCarGui(NewCard newCard) {
             carDetails.switchMode(DetailsMode.EMPTY);
-            card.reset();
+            newCard.reset();
             carsList.updateCarsTable();
             carsButtons.enableNew();
+            carsButtons.removeSaveActionListeners();            
         }
     }
 }

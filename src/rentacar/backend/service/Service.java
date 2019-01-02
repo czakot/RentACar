@@ -8,6 +8,7 @@ package rentacar.backend.service;
 import java.time.LocalDate;
 import java.util.List;
 import rentacar.backend.dao.DaoManager;
+import rentacar.backend.entities.BareCar;
 import rentacar.backend.entities.Car;
 import rentacar.backend.entities.Customer;
 import rentacar.backend.entities.Rent;
@@ -29,6 +30,11 @@ public class Service implements IService {
     }
 
     @Override
+    public Car getCar(String numberPlate) {
+        return daoManager.getCar(numberPlate);
+    }
+
+    @Override
     public List<Car> listCars() {
         return daoManager.listCars();
     }
@@ -36,54 +42,48 @@ public class Service implements IService {
     @Override
     public List<Car> listCarsAvailable4Rent() {
         return null;
-        
     }
 
     @Override
-    public void addCar(String numberPlate, String make, String model, int year, int dailyRentalFee, LocalDate dateOfLastService, Boolean inService, int photo) throws ServiceException {
+    public Boolean addCar(BareCar bareCar) {
+        return null;
     }
     
     @Override
-    public void modifyCar(String numberPlate, int dailyRentalFee, LocalDate dateOfLastService, Boolean inService, int photo) throws ServiceException {
-        
+    public Boolean modifyCar(BareCar bareCar) {
+        Car car = new Car()
+        return daoManager.;
     }
     
     @Override
     public List<Customer> listCustomer() {
         return null;
-        
     }
 
     @Override
     public List<Customer> listCustomersEligible4Rent() {
         return null;
-        
     }
     
     @Override
     public void addCustomer(String name, String address, String phone) {
-        
     }
     
     @Override
     public List<Rent> listRents() {
         return null;
-        
     }
     
     @Override
     public List<Rent> listRentsFiltered(String numberPlate,String customerName, Boolean onlyPending) {
         return null;
-        
     }
     
     @Override
     public void addRent(int customerId, String numberPlate, LocalDate expectedReturnDate) {
-        
     }
     
     @Override
     public void closeRent(int rentId) {
-        
     }
 }

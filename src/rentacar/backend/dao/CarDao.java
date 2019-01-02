@@ -74,6 +74,29 @@ public class CarDao extends GenericDao<Car, String> implements ICarDao {
     }
 
     @Override
+    public Car findById(String numberPlate){
+        String sql = "SELECT * FROM USERNAME.CARS WHERE NUMBER_PLATE = ?";
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            statement = connection.prepareStatement(sql);
+            statement.setString(1, numberPlate);
+
+            resultSet = statement.executeQuery();
+            Car result = null;
+            while (resultSet.next()) {
+                result = setCar(resultSet);
+            }
+            return result;
+        } catch (SQLException ex) {
+            Logger.getLogger(CarDao.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            close(statement, resultSet);
+        }
+        return null;
+    }
+    
+    @Override
     public List<Car> findAll(){
         String sql = "SELECT * FROM USERNAME.CARS";
         PreparedStatement statement = null;

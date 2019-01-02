@@ -23,6 +23,7 @@ import javax.swing.ToolTipManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.MaskFormatter;
 import org.jdatepicker.*;
+import rentacar.backend.entities.BareCar;
 import rentacar.utility.MyFormattedTextField;
 import rentacar.utility.MyTextField;
 
@@ -155,7 +156,23 @@ public class NewCard extends BaseCard {
         this.getTopLevelAncestor().validate();
     }
     
-    String[] getValues() {
-        return null;
+    BareCar getBareCar() {
+        BareCar bareCar = new BareCar(numberPlate.getText());
+        bareCar.setMake(make.getText());
+        bareCar.setModel(model.getText());
+        bareCar.setYearOfManufacturing(Integer.valueOf(yearOfManufacturing.getText()));
+        bareCar.setDailyRentalFee(Integer.valueOf(dailyRentalFee.getText()));
+        bareCar.setLastService(LocalDate.of(lastService.getModel().getYear(),
+                                            lastService.getModel().getMonth(), 
+                                            lastService.getModel().getDay()));
+        bareCar.setInService(inService.isSelected());
+        bareCar.setPhoto(photo.getComponentCount() == 1);
+        bareCar.setPhotoPath(choosenPhotoFullPath);
+        
+        System.out.println("lastService: " + bareCar.getLastService().toString());
+        System.out.println("LocalDate max Year: " + LocalDate.MAX.getYear());
+        System.out.println("LocalDate min Year: " + LocalDate.MIN.getYear());
+        
+        return bareCar;
     }
 }
