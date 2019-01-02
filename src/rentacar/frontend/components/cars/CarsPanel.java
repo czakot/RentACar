@@ -91,19 +91,19 @@ public class CarsPanel extends JPanel {
         BareCar editedCar = editorCard.getBareCar();
 
         carsButtons.disableSaveDiscard();
-        if (GuiManager.u) {
-            resetCarGui(newCard);
+        if (GuiManager.updateCar(editedCar)) {
+            resetCarGui(editorCard);
         } else {
             carsButtons.enableSaveDiscard();
         }
     }
         
-        private void resetCarGui(NewCard newCard) {
-            carDetails.switchMode(DetailsMode.EMPTY);
-            newCard.reset();
-            carsList.updateCarsTable();
-            carsButtons.enableNew();
-            carsButtons.removeSaveActionListeners();            
-        }
+    private void resetCarGui(NewCard newCard) {
+        carDetails.switchMode(DetailsMode.EMPTY);
+        newCard.reset();
+        carsList.updateCarsTable();
+        carsButtons.enableNew();
+        carsButtons.removeSaveActionListeners();            
     }
 }
+

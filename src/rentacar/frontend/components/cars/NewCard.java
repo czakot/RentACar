@@ -23,6 +23,7 @@ import javax.swing.ToolTipManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.MaskFormatter;
 import org.jdatepicker.*;
+import static rentacar.RentACar.FILE_SEPARATOR;
 import rentacar.backend.entities.BareCar;
 import rentacar.utility.MyFormattedTextField;
 import rentacar.utility.MyTextField;
@@ -43,7 +44,7 @@ public class NewCard extends BaseCard {
     final JButton photoSelector;
     final JFileChooser fileChooser;
     String choosenPhotoFullPath;
-    final static String SOURCES_START_PATH = System.getProperty("user.dir") + FILE_SEPARATOR + "photos_container";
+    final static String PHOTO_SOURCES_START_PATH = System.getProperty("user.dir") + FILE_SEPARATOR + "photos_container";
     
     public NewCard(CarDetails carDetails) {
         super(carDetails);
@@ -143,7 +144,7 @@ public class NewCard extends BaseCard {
     }
     
     private void photoSelection(ActionEvent e) {
-        fileChooser.setCurrentDirectory(new File(SOURCES_START_PATH));
+        fileChooser.setCurrentDirectory(new File(PHOTO_SOURCES_START_PATH));
         int returnValue = fileChooser.showDialog(null, "Fotó kiválasztása");
         if (returnValue == JFileChooser.APPROVE_OPTION) {
             try {

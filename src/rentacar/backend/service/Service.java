@@ -46,13 +46,16 @@ public class Service implements IService {
 
     @Override
     public Boolean addCar(BareCar bareCar) {
-        return null;
+        Car car = new Car(bareCar);
+        daoManager.save(car);
+        return car.getValid();
     }
     
     @Override
     public Boolean modifyCar(BareCar bareCar) {
-        Car car = new Car()
-        return daoManager.;
+        Car car = new Car(bareCar);
+        daoManager.update(car);
+        return car.getValid();
     }
     
     @Override

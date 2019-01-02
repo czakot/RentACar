@@ -58,7 +58,7 @@ public interface IService {
      * @param photo
      * @throws rentacar.backend.service.ServiceException
      */
-    void modifyCar(String numberPlate, int dailyRentalFee, LocalDate dateOfLastService, Boolean inService, int photo) throws ServiceException;
+    Boolean modifyCar(BareCar bareCar);
     
     /**
      * Ügyfelek listázása

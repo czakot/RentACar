@@ -63,12 +63,21 @@ public class DaoManager {
         return cars;
     }
     
-    public 
+    public void save(Car car){
+        openConnection();
+        carDao.setConnection(connection);
+        carDao.save(car);
+        closeConnection();
+    }
+    
+    public void update(Car car){
+        openConnection();
+        carDao.setConnection(connection);
+        carDao.update(car);
+        closeConnection();
+    }
     
 /*
-    save
-    update
-    findById
     findAll
     listCarsAvailable4Rent
     */ 

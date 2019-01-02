@@ -32,7 +32,6 @@ public class CarDetails extends JPanel {
     private DetailsMode mode;
     private DetailsMode modeToReturn;
     final static String[] TITLE_STRINGS = {"Rendszám:","Márka:","Típus:","Évjárat:","Bérleti díj/nap:","Utolsó szerviz:","Most szervizben:","Fotó:"};
-    final static Color BACKGROUND_DISABLED = new Color(214, 217, 223);
         
     
     public CarDetails(CarsPanel carsPanel) {

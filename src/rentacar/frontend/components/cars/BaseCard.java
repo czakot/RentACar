@@ -6,7 +6,6 @@
 package rentacar.frontend.components.cars;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
@@ -15,6 +14,8 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import static rentacar.RentACar.BACKGROUND_DISABLED;
+import static rentacar.RentACar.FILE_SEPARATOR;
 import rentacar.utility.ShrinkIcon;
 
 /**
@@ -27,9 +28,6 @@ public class BaseCard extends JPanel{
     final JPanel photo;
     final CarDetails carDetails;
     final static String[] TITLE_STRINGS = {"Rendszám:","Márka:","Típus:","Évjárat:","Bérleti díj/nap:","Utolsó szerviz:","Most szervizben:","Fotó:"};
-    final static Color BACKGROUND_DISABLED = new Color(214, 217, 223);
-    final static Color BACKGROUND_ENABLED = new Color(255, 255, 255);
-    final static String FILE_SEPARATOR = System.getProperty("file.separator");
     
     public BaseCard(CarDetails carDetails) {
         this.carDetails = carDetails;

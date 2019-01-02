@@ -5,6 +5,7 @@
  */
 package rentacar;
 
+import java.awt.Color;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.UIManager;
@@ -18,6 +19,9 @@ import rentacar.frontend.GuiManager;
  */
 public class RentACar {
  
+    public final static Color BACKGROUND_DISABLED = new Color(214, 217, 223);
+    public final static Color BACKGROUND_ENABLED = new Color(255, 255, 255);
+    public final static String FILE_SEPARATOR = System.getProperty("file.separator");
     /**
      * @param args the command line arguments
      * @throws java.lang.Exception

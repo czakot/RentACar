@@ -10,6 +10,31 @@ package rentacar.backend.entities;
  * @author czakot
  */
 public class Car extends BareCar {
+    
+    Boolean valid;
+
+    public Car() {
+        this.valid = true;
+    }
+    
+    
+
+    public Car(BareCar bareCar){
+        valid = true;
+        setNumberPlate(bareCar.getNumberPlate());
+        setMake(bareCar.getMake());
+        setModel(bareCar.getModel());
+        setYearOfManufacturing(bareCar.getYearOfManufacturing());
+        setDailyRentalFee(bareCar.getDailyRentalFee());
+        setLastService(bareCar.getLastService());
+        setInService(bareCar.getInService());
+        setPhoto(bareCar.getPhoto());
+        setPhotoPath(bareCar.getPhotoPath());
+    }
+    
+    public Boolean getValid() {
+        return valid;
+    }
 
     @Override
     public int hashCode() {

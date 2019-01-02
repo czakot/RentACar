@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rentacar.frontend.components.cars;
+package rentacar.backend.entities;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -14,9 +14,9 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import rentacar.backend.entities.Car;
+import static rentacar.RentACar.FILE_SEPARATOR;
 import rentacar.frontend.components.DetailsMode;
-import static rentacar.frontend.components.cars.BaseCard.FILE_SEPARATOR;
+import rentacar.frontend.components.cars.CarsPanel;
 
 /**
  *
@@ -142,7 +142,6 @@ public class CarValidateAndStorePersistent {
     }
 
     private void validateNumberPlate(String numberPlate) {
-        Service.
     }
 
     private void validateMake(String make) {

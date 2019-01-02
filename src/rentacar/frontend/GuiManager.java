@@ -5,7 +5,6 @@
  */
 package rentacar.frontend;
 
-import java.time.LocalDate;
 import java.util.List;
 import rentacar.backend.entities.BareCar;
 import rentacar.backend.entities.Car;
