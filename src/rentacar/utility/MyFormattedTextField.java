@@ -7,6 +7,7 @@ package rentacar.utility;
 
 import java.awt.Point;
 import java.awt.event.MouseEvent;
+import java.text.DecimalFormat;
 import java.text.Format;
 import javax.swing.JFormattedTextField;
 import javax.swing.text.MaskFormatter;
@@ -17,9 +18,19 @@ import javax.swing.text.MaskFormatter;
  */
 public class MyFormattedTextField extends JFormattedTextField {
 
+    public MyFormattedTextField() {
+        super();
+    }
+    
     public MyFormattedTextField(MaskFormatter format) {
         super(format);
     }
+    
+    public MyFormattedTextField(DecimalFormat format) {
+        super(format);
+    }
+    
+    
     @Override
     public Point getToolTipLocation(MouseEvent event) {
       return new Point(getWidth(), 0);

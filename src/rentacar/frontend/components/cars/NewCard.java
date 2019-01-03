@@ -10,18 +10,24 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.InputVerifier;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
+import javax.swing.JFormattedTextField;
 import javax.swing.SwingConstants;
 import javax.swing.ToolTipManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.MaskFormatter;
+import javax.swing.text.NumberFormatter;
 import org.jdatepicker.*;
 import static rentacar.RentACar.FILE_SEPARATOR;
 import rentacar.backend.entities.BareCar;
@@ -69,7 +75,28 @@ public class NewCard extends BaseCard {
         content.add(model,gbc);
             
         gbc.gridy++;
-        yearOfManufacturing = new MyFormattedTextField(createFormatter("####","0123456789"));
+  //      MaskFormatter maskFormatter = null;
+//        yearOfManufacturing = new MyFormattedTextField(createFormatter("####","0123456789"));
+        yearOfManufacturing = new MyFormattedTextField();
+        yearOfManufacturing.setValue(LocalDate.now().getYear());
+//        yearOfManufacturing = new MyFormattedTextField(maskFormatter);
+        NumberFormatter defaultFormatter = new NumberFormatter(new DecimalFormat("#;"));
+        defaultFormatter.setValueClass(Integer.class);
+        DefaultFormatterFactory yearFactory = new DefaultFormatterFactory(defaultFormatter, defaultFormatter,defaultFormatter);
+        yearOfManufacturing.setFormatterFactory(yearFactory);
+
+        InputVerifier yearVerifier = new InputVerifier() {
+            @Override
+            public boolean verify(JComponent input) {
+                JFormattedTextField ftf = (JFormattedTextField)input;
+                try {
+                    yearOfManufacturing.commitEdit();
+                } catch (ParseException ex) { /* nothing to do */}
+                int ftfint = (Integer)(ftf.getValue());
+                return (ftfint >= 1900 && ftfint <= 2050);
+            }
+        };
+        yearOfManufacturing.setInputVerifier(yearVerifier);
         content.add(yearOfManufacturing,gbc);
         
         gbc.gridy++;
@@ -135,7 +162,7 @@ public class NewCard extends BaseCard {
         MaskFormatter formatter = null;
         try {
             formatter = new MaskFormatter(formatString);
-            formatter.setPlaceholderCharacter('_');
+//            formatter.setPlaceholderCharacter('_');
             formatter.setValidCharacters(validChars);
         } catch (ParseException ex) {
             Logger.getLogger(NewCard.class.getName()).log(Level.SEVERE, null, ex);
@@ -161,18 +188,16 @@ public class NewCard extends BaseCard {
         BareCar bareCar = new BareCar(numberPlate.getText());
         bareCar.setMake(make.getText());
         bareCar.setModel(model.getText());
-        bareCar.setYearOfManufacturing(Integer.valueOf(yearOfManufacturing.getText()));
-        bareCar.setDailyRentalFee(Integer.valueOf(dailyRentalFee.getText()));
+//        bareCar.setYearOfManufacturing(Integer.valueOf(yearOfManufacturing.getText()));
+        bareCar.setYearOfManufacturing(1967/*(Integer)yearOfManufacturing.getValue()*/);
+        System.out.println("Year of: int = " + yearOfManufacturing.getValue() + "   text = " + yearOfManufacturing.getText());
+        bareCar.setDailyRentalFee(6000/*Integer.valueOf(dailyRentalFee.getText())*/);
         bareCar.setLastService(LocalDate.of(lastService.getModel().getYear(),
-                                            lastService.getModel().getMonth(), 
+                                            lastService.getModel().getMonth()+1, 
                                             lastService.getModel().getDay()));
         bareCar.setInService(inService.isSelected());
         bareCar.setPhoto(photo.getComponentCount() == 1);
         bareCar.setPhotoPath(choosenPhotoFullPath);
-        
-        System.out.println("lastService: " + bareCar.getLastService().toString());
-        System.out.println("LocalDate max Year: " + LocalDate.MAX.getYear());
-        System.out.println("LocalDate min Year: " + LocalDate.MIN.getYear());
         
         return bareCar;
     }
