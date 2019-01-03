@@ -75,28 +75,26 @@ public class NewCard extends BaseCard {
         content.add(model,gbc);
             
         gbc.gridy++;
-  //      MaskFormatter maskFormatter = null;
-//        yearOfManufacturing = new MyFormattedTextField(createFormatter("####","0123456789"));
         yearOfManufacturing = new MyFormattedTextField();
         yearOfManufacturing.setValue(LocalDate.now().getYear());
-//        yearOfManufacturing = new MyFormattedTextField(maskFormatter);
-        NumberFormatter defaultFormatter = new NumberFormatter(new DecimalFormat("#;"));
-        defaultFormatter.setValueClass(Integer.class);
-        DefaultFormatterFactory yearFactory = new DefaultFormatterFactory(defaultFormatter, defaultFormatter,defaultFormatter);
+        NumberFormatter defaultYearFormatter = new NumberFormatter(new DecimalFormat("#;"));
+        defaultYearFormatter.setValueClass(Integer.class);
+        DefaultFormatterFactory yearFactory = new DefaultFormatterFactory(defaultYearFormatter);
         yearOfManufacturing.setFormatterFactory(yearFactory);
-
+        
         InputVerifier yearVerifier = new InputVerifier() {
             @Override
             public boolean verify(JComponent input) {
                 JFormattedTextField ftf = (JFormattedTextField)input;
                 try {
                     yearOfManufacturing.commitEdit();
-                } catch (ParseException ex) { /* nothing to do */}
+                } catch (ParseException ex) { } // nothing to do
                 int ftfint = (Integer)(ftf.getValue());
                 return (ftfint >= 1900 && ftfint <= 2050);
             }
         };
         yearOfManufacturing.setInputVerifier(yearVerifier);
+
         content.add(yearOfManufacturing,gbc);
         
         gbc.gridy++;
@@ -189,9 +187,9 @@ public class NewCard extends BaseCard {
         bareCar.setMake(make.getText());
         bareCar.setModel(model.getText());
 //        bareCar.setYearOfManufacturing(Integer.valueOf(yearOfManufacturing.getText()));
-        bareCar.setYearOfManufacturing(1967/*(Integer)yearOfManufacturing.getValue()*/);
-        System.out.println("Year of: int = " + yearOfManufacturing.getValue() + "   text = " + yearOfManufacturing.getText());
+        bareCar.setYearOfManufacturing((Integer)yearOfManufacturing.getValue());
         bareCar.setDailyRentalFee(6000/*Integer.valueOf(dailyRentalFee.getText())*/);
+        System.out.println("Daily rental fee: int = " + dailyRentalFee.getValue() + "   text = " + dailyRentalFee.getText());
         bareCar.setLastService(LocalDate.of(lastService.getModel().getYear(),
                                             lastService.getModel().getMonth()+1, 
                                             lastService.getModel().getDay()));
