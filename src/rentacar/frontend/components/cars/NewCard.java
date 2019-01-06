@@ -29,7 +29,6 @@ import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.MaskFormatter;
 import javax.swing.text.NumberFormatter;
 import org.jdatepicker.*;
-import static rentacar.RentACar.FILE_SEPARATOR;
 import rentacar.backend.entities.BareCar;
 import rentacar.utility.MyFormattedTextField;
 import rentacar.utility.MyTextField;
@@ -48,22 +47,32 @@ public class NewCard extends BaseCard {
     final JDatePicker lastService;
     final JCheckBox inService;
     final JButton photoSelector;
+    Boolean initialPhoto;
     final JFileChooser fileChooser;
     String choosenPhotoFullPath;
-    final static String PHOTO_SOURCES_START_PATH = System.getProperty("user.dir") + FILE_SEPARATOR + "photos_container";
+    final static String PHOTO_SOURCES_START_PATH = System.getProperty("user.dir") + File.separator + "photos_container";
+    public static final int THIS_YEAR = LocalDate.now().getYear();
+    public static final String VALID_CHARS_FOR_NUMBER_PLATE = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    public static final String MASK_FOR_NUMBER_PLATE = "UUU###";
+    public static final String TOOLTIP_NUMBER_PLATE = "Rendszám: BBB### (BBB: betű, #: számjegy) alakban";
+    public static final String TOOLTIP_MAKE = "Márka: tetszőleges szöveg";
+    public static final String TOOLTIP_MODEL = "Típus: tetszőleges szöveg";
+    public static final String TOOLTIP_YEAR = "Évjárat: 4 számjeggyel írva [1900-tól " + THIS_YEAR + "-ig]";
+    public static final String TOOLTIP_DAILY = "Bérleti díj összege: legyen nem negatív egész";
     
     public NewCard(CarDetails carDetails) {
         super(carDetails);
+        initialPhoto = false;
         fileChooser = new JFileChooser();
-        fileChooser.setFileFilter(new FileNameExtensionFilter("JPG formátumú képek", "jpg", "jpeg"));
+        fileChooser.setFileFilter(new FileNameExtensionFilter("JPG formátumú képek", "jpg"));
+        choosenPhotoFullPath = null;
         
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 0.5;
         gbc.gridx = 1;
         gbc.gridy = 0;
-        numberPlate = new MyFormattedTextField(createFormatter("UUU###",
-                                                              "0123456789abcdefghijklmnopqrstxyvwzABCDEFGHIJKLMNOPQRSTXYVWZ"));
+        numberPlate = new MyFormattedTextField(createFormatter(MASK_FOR_NUMBER_PLATE,VALID_CHARS_FOR_NUMBER_PLATE));
         content.add(numberPlate,gbc);
         
         gbc.gridy++;
@@ -76,21 +85,25 @@ public class NewCard extends BaseCard {
             
         gbc.gridy++;
         yearOfManufacturing = new MyFormattedTextField();
-        yearOfManufacturing.setValue(LocalDate.now().getYear());
         NumberFormatter defaultYearFormatter = new NumberFormatter(new DecimalFormat("#;"));
         defaultYearFormatter.setValueClass(Integer.class);
         DefaultFormatterFactory yearFactory = new DefaultFormatterFactory(defaultYearFormatter);
         yearOfManufacturing.setFormatterFactory(yearFactory);
+        resetDefaultYearOfManufacturing();
         
         InputVerifier yearVerifier = new InputVerifier() {
             @Override
             public boolean verify(JComponent input) {
                 JFormattedTextField ftf = (JFormattedTextField)input;
+                Boolean inputError = false;
                 try {
                     yearOfManufacturing.commitEdit();
-                } catch (ParseException ex) { } // nothing to do
+                } catch (ParseException ex) {
+                    inputError = true;
+                }
                 int ftfint = (Integer)(ftf.getValue());
-                return (ftfint >= 1900 && ftfint <= 2050);
+                inputError = inputError || ftfint < 1900 || ftfint > THIS_YEAR;
+                return !inputError;
             }
         };
         yearOfManufacturing.setInputVerifier(yearVerifier);
@@ -98,8 +111,32 @@ public class NewCard extends BaseCard {
         content.add(yearOfManufacturing,gbc);
         
         gbc.gridy++;
-        dailyRentalFee = new MyFormattedTextField(createFormatter("#######","0123456789"));
-        dailyRentalFee.setToolTipText("Bérleti díj összege: maximum 7 számjeggyel [csak pozitív vagy 0]");
+        dailyRentalFee = new MyFormattedTextField();
+        // esetleg lehetne az eddigi átlag/minimum/maximum bérleti díjat adni kezdőértéknek
+        NumberFormatter defaultDailyFormatter = new NumberFormatter(new DecimalFormat("#;"));
+        defaultDailyFormatter.setValueClass(Integer.class);
+        DefaultFormatterFactory dailyFactory = new DefaultFormatterFactory(defaultDailyFormatter);
+        dailyRentalFee.setFormatterFactory(dailyFactory);
+        resetDefaultDailyRentalFee();
+        
+        InputVerifier dailyVerifier = new InputVerifier() {
+            @Override
+            public boolean verify(JComponent input) {
+                JFormattedTextField ftf = (JFormattedTextField)input;
+                Boolean inputError = false;
+                try {
+                    dailyRentalFee.commitEdit();
+                } catch (ParseException ex) {
+                    inputError = true;
+                }
+                int ftfint = (Integer)(ftf.getValue());
+                inputError = inputError || ftfint < 0;
+                return !inputError;
+            }
+        };
+        dailyRentalFee.setInputVerifier(dailyVerifier);
+        
+        dailyRentalFee.setToolTipText(TOOLTIP_DAILY);
         content.add(dailyRentalFee,gbc);
         
         gbc.gridy++;
@@ -131,10 +168,10 @@ public class NewCard extends BaseCard {
         ToolTipManager.sharedInstance().setInitialDelay(0);
         ToolTipManager.sharedInstance().setDismissDelay(Integer.MAX_VALUE);
         if (this.getClass().getName().equals("rentacar.frontend.components.cars.NewCard")) {
-            numberPlate.setToolTipText("Rendszám: BBB### (BBB: betű, #: számjegy) alakban");
-            make.setToolTipText("Márka: tetszőleges szöveg");
-            model.setToolTipText("Típus: tetszőleges szöveg");
-            yearOfManufacturing.setToolTipText("Évjárat: 4 számjeggyel írva [1900-tól az idei évig]");
+            numberPlate.setToolTipText(TOOLTIP_NUMBER_PLATE);
+            make.setToolTipText(TOOLTIP_MAKE);
+            model.setToolTipText(TOOLTIP_MODEL);
+            yearOfManufacturing.setToolTipText(TOOLTIP_YEAR);
         }
     }
     
@@ -142,12 +179,23 @@ public class NewCard extends BaseCard {
         numberPlate.setText("");
         make.setText("");
         model.setText("");
-        yearOfManufacturing.setText("");
-        dailyRentalFee.setText("");
-        setDatePickerWithLocaldate(lastService, LocalDate.now().plusDays(1));
+        resetDefaultYearOfManufacturing();
+        resetDefaultDailyRentalFee();
+        setDatePickerWithLocaldate(lastService, LocalDate.now().plusDays(1)); // holnap => nem érvényes => kelljen szerkeszteni
         inService.setSelected(false);
         photo.removeAll();
-        choosenPhotoFullPath = "";
+        initialPhoto = false;
+        choosenPhotoFullPath = null;
+    }
+    
+    private void resetDefaultYearOfManufacturing() {
+        yearOfManufacturing.setValue(0);
+        yearOfManufacturing.setText("");
+    }
+    
+    private void resetDefaultDailyRentalFee() {
+        dailyRentalFee.setValue(-1);
+        dailyRentalFee.setText("");
     }
     
     private void setDatePickerWithLocaldate(JDatePicker datePicker, LocalDate localDate) {
@@ -160,7 +208,6 @@ public class NewCard extends BaseCard {
         MaskFormatter formatter = null;
         try {
             formatter = new MaskFormatter(formatString);
-//            formatter.setPlaceholderCharacter('_');
             formatter.setValidCharacters(validChars);
         } catch (ParseException ex) {
             Logger.getLogger(NewCard.class.getName()).log(Level.SEVERE, null, ex);
@@ -186,16 +233,14 @@ public class NewCard extends BaseCard {
         BareCar bareCar = new BareCar(numberPlate.getText());
         bareCar.setMake(make.getText());
         bareCar.setModel(model.getText());
-//        bareCar.setYearOfManufacturing(Integer.valueOf(yearOfManufacturing.getText()));
         bareCar.setYearOfManufacturing((Integer)yearOfManufacturing.getValue());
-        bareCar.setDailyRentalFee(6000/*Integer.valueOf(dailyRentalFee.getText())*/);
-        System.out.println("Daily rental fee: int = " + dailyRentalFee.getValue() + "   text = " + dailyRentalFee.getText());
+        bareCar.setDailyRentalFee((Integer)dailyRentalFee.getValue());
         bareCar.setLastService(LocalDate.of(lastService.getModel().getYear(),
                                             lastService.getModel().getMonth()+1, 
                                             lastService.getModel().getDay()));
         bareCar.setInService(inService.isSelected());
-        bareCar.setPhoto(photo.getComponentCount() == 1);
-        bareCar.setPhotoPath(choosenPhotoFullPath);
+        bareCar.setPhoto(initialPhoto);
+        bareCar.setChoosenPhotoPath(choosenPhotoFullPath);
         
         return bareCar;
     }

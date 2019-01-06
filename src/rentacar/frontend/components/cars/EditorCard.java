@@ -5,7 +5,11 @@
  */
 package rentacar.frontend.components.cars;
 
-import javax.swing.JTextField;
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import rentacar.backend.entities.BareCar;
 
 /**
  *
@@ -25,20 +29,26 @@ public class EditorCard extends NewCard {
         disableEditingOnTextField(yearOfManufacturing);
     }
     
-    void setEditorContent(String[] text) {
-        numberPlate.setText(text[0]);
-        make.setText(text[1]);
-        model.setText(text[2]);
-        yearOfManufacturing.setText(text[3]);
-        dailyRentalFee.setText(text[4]);
-        String[] dateElements = text[5].split("-");
-        lastService.getModel().setYear(Integer.valueOf(dateElements[0]));
-        lastService.getModel().setMonth(Integer.valueOf(dateElements[1]));
-        lastService.getModel().setDay(Integer.valueOf(dateElements[2]));
-        inService.setText(text[6]);
-        inService.setSelected(text[6].equals("igen"));
+    void setEditorContent(BareCar car) {
+        numberPlate.setText(car.getNumberPlate());
+        make.setText(car.getMake());
+        model.setText(car.getModel());
+        yearOfManufacturing.setText(Integer.toString(car.getYearOfManufacturing()));
+        dailyRentalFee.setText(Integer.toString(car.getDailyRentalFee()));
+        try {
+            yearOfManufacturing.commitEdit();
+            dailyRentalFee.commitEdit();
+        } catch (ParseException ex) {
+            Logger.getLogger(EditorCard.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        LocalDate lS = car.getLastService();
+        lastService.getModel().setYear(lS.getYear());
+        lastService.getModel().setMonth(lS.getMonthValue()-1);
+        lastService.getModel().setDay(lS.getDayOfMonth());
+        inService.setSelected(car.getInService());
+        initialPhoto = car.getPhoto();
         photoSelector.setText("Fotó választás");
         
-        presentPhoto(text[7].equals("van"), fromSelectedJpgs(numberPlate.getText()));
+        presentPhoto(car.getPhoto(), fromSelectedJpgs(car.getNumberPlate()));
     }
 }

@@ -23,6 +23,7 @@ public class CarsButtons extends JPanel {
     private final JButton save;
     private final JButton discard;
     private Boolean previousEnableStateModifyCard;
+    private ActionListener ActionListenerForSave;
     
     public CarsButtons(CarsPanel carsPanel) {
         this.carsPanel = carsPanel;
@@ -39,12 +40,12 @@ public class CarsButtons extends JPanel {
         
         save = new JButton("Mentés");
         save.setVisible(false);
-        save.setEnabled(false);
+//        save.setEnabled(false);
         add(save);
         
         discard = new JButton("Eldobás");
         discard.setVisible(false);
-        discard.setEnabled(false);
+//        discard.setEnabled(false);
         discard.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -55,16 +56,16 @@ public class CarsButtons extends JPanel {
     }
     
     private void createNewCar(ActionEvent e) {
-        save.addActionListener(carsPanel::saveNew);
+        ActionListenerForSave = carsPanel::saveNew;
         carsPanel.createNewCar();
     }
     
     private void editSelectedCar(ActionEvent e) {
-        save.addActionListener(carsPanel::saveEdited);
+        ActionListenerForSave = carsPanel::saveEdited;
         carsPanel.editSelectedCar();
     }
     
-    void removeSaveActionListeners() {
+    private void removeSaveActionListeners() {
         for (ActionListener actionListener : save.getActionListeners()) {
             save.removeActionListener(actionListener);
         }
@@ -95,15 +96,17 @@ public class CarsButtons extends JPanel {
     
     void enableSaveDiscard() {
         save.setVisible(true);
-        save.setEnabled(true);
+//        save.setEnabled(true);
+        save.addActionListener(ActionListenerForSave);
         discard.setVisible(true);
-        discard.setEnabled(true);
+//        discard.setEnabled(true);
     }
 
     void disableSaveDiscard() {
         save.setVisible(false);
-        save.setEnabled(false);
+//        save.setEnabled(false);
         discard.setVisible(false);
-        discard.setEnabled(false);
+//        discard.setEnabled(false);
+        removeSaveActionListeners();
     }
 }

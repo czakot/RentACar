@@ -20,7 +20,7 @@ public class BareCar {
     private LocalDate lastService;
     private Boolean inService;
     private Boolean photo;
-    private String photoPath;
+    private String choosenPhotoPath;
 
     public BareCar() {
     }
@@ -29,17 +29,17 @@ public class BareCar {
         this.numberPlate = numberPlate;
     }
 
-    public BareCar(String numberPlate, int dailyRentalFee, LocalDate lastService, Boolean inService, Boolean photo, String photoPath) {
+    public BareCar(String numberPlate, int dailyRentalFee, LocalDate lastService, Boolean inService, Boolean photo, String choosenPhotoPath) {
         this.numberPlate = numberPlate;
         this.dailyRentalFee = dailyRentalFee;
         this.lastService = lastService;
         this.inService = inService;
         this.photo = photo;
-        this.photoPath = photoPath;
+        this.choosenPhotoPath = choosenPhotoPath;
     }
 
     public BareCar(String numberPlate, String make, String model, int yearOfManufacturing, 
-               int dailyRentalFee, LocalDate lastService, Boolean inService, Boolean photo, String photoPath) {
+               int dailyRentalFee, LocalDate lastService, Boolean inService, Boolean photo, String choosenPhotoPath) {
         this.numberPlate = numberPlate;
         this.make = make;
         this.model = model;
@@ -48,7 +48,7 @@ public class BareCar {
         this.lastService = lastService;
         this.inService = inService;
         this.photo = photo;
-        this.photoPath = photoPath;
+        this.choosenPhotoPath = choosenPhotoPath;
     }
 
     public String getNumberPlate() {
@@ -114,11 +114,11 @@ public class BareCar {
     public void setPhoto(Boolean photo) {
         this.photo = photo;
     }
-    public String getPhotoPath() {
-        return photoPath;
+    public String getChoosenPhotoPath() {
+        return choosenPhotoPath;
     }
 
-    public void setPhotoPath(String photoPath) {
-        this.photoPath = photoPath;
+    public void setChoosenPhotoPath(String choosenPhotoPath) {
+        this.choosenPhotoPath = choosenPhotoPath;
     }
 }

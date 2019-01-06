@@ -7,6 +7,7 @@ package rentacar.frontend.components.cars;
 
 import java.awt.GridBagConstraints;
 import javax.swing.JTextField;
+import rentacar.backend.entities.BareCar;
 
 /**
  *
@@ -38,11 +39,17 @@ public class DetailsCard extends BaseCard {
         return text;
     }
     
-    void refreshValues(String[] values) {
-        for (int i = 0; i < 8;++i) {
-            textField[i].setText(values[i]);
-        }
+    void refreshValues(BareCar car) {
         
-        presentPhoto(values[7].equals("van"), fromSelectedJpgs(values[0]));
+        textField[0].setText(car.getNumberPlate());
+        textField[1].setText(car.getMake());
+        textField[2].setText(car.getModel());
+        textField[3].setText(Integer.toString(car.getYearOfManufacturing()));
+        textField[4].setText(Integer.toString(car.getDailyRentalFee()));
+        textField[5].setText(car.getLastService().toString());
+        textField[6].setText(car.getInService() ? "igen" : "nem");
+        textField[7].setText(car.getPhoto() ? "van" : "nincs");
+        
+        presentPhoto(car.getPhoto(), fromSelectedJpgs(car.getNumberPlate()));
     }
 }

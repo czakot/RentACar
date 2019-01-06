@@ -6,13 +6,19 @@
 package rentacar.frontend.components.cars;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
+import rentacar.backend.entities.BareCar;
 import rentacar.backend.entities.Car;
 import rentacar.frontend.GuiManager;
 
@@ -21,10 +27,12 @@ import rentacar.frontend.GuiManager;
  * @author czakot
  */
 public class CarsList extends JPanel {
+    
+    private final JButton helperDeleteButton;
 
     private final CarsPanel carsPanel;
     private final JTable carsTable;
-    private String selected = null;
+    private String selectedNumberPlate = null;
     private static final String[] COLUMN_NAMES = {"Rendszám", "Márka", "Típus", "Évjárat", "Bérleti díj", "Szervizelés:", "Szervizben?", "Fénykép"};
 
     public CarsList(CarsPanel carsPanel) {
@@ -40,24 +48,54 @@ public class CarsList extends JPanel {
         carsTable.setColumnSelectionAllowed(false);
         carsTable.getSelectionModel().addListSelectionListener(this::actionRowSelectionChanged);
         add(new JScrollPane(carsTable),BorderLayout.CENTER);
+// ****** specifikáción kívüli autó törlés ******
+        helperDeleteButton = new JButton("Delete Selected");
+        helperDeleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GuiManager.deleteCar(selectedNumberPlate);
+                selectedNumberPlate = null;
+                updateCarsTable();
+            }
+        });
+        add(helperDeleteButton,BorderLayout.SOUTH);
+// ****** specifikáción kívüli autó törlés ******
 
 //        carsPanel.refreshCarDetails(getSelectedCarDetails());
     }
     
-    private String[] getSelectedCarValues() {
+    BareCar getSelectedCar() {
         final int row = carsTable.getSelectedRow();
         if (row < 0) {
             return null;
         }
         
+        BareCar car = new BareCar();
+        
+        car.setNumberPlate(carsTable.getValueAt(row,0).toString());
+        car.setMake(carsTable.getValueAt(row,1).toString());
+        car.setModel(carsTable.getValueAt(row,2).toString());
+        car.setYearOfManufacturing(Integer.valueOf(carsTable.getValueAt(row,3).toString()));
+        car.setDailyRentalFee(Integer.valueOf(carsTable.getValueAt(row,4).toString()));
+        String[] dateElements = carsTable.getValueAt(row,5).toString().split("-");
+        car.setLastService(LocalDate.of(Integer.valueOf(dateElements[0]),Integer.valueOf(dateElements[1]),Integer.valueOf(dateElements[2])));
+        car.setInService(carsTable.getValueAt(row,5).toString().equals("igen"));
+        car.setPhoto(carsTable.getValueAt(row,7).toString().equals("van"));
+        car.setChoosenPhotoPath("");
+        
+/*        
         final int columns = carsTable.getColumnCount();
         String[] selectedCarValues = new String[columns];
         
         for (int column = 0; column < columns;++column) {
             selectedCarValues[column] = carsTable.getValueAt(row,column).toString();
         }
+
         return selectedCarValues;
-    }
+*/
+
+        return car;
+}
     
     private Object[][] getCars() {
         final int COLUMN_NUMBER = 8;
@@ -80,32 +118,35 @@ public class CarsList extends JPanel {
     
     private void actionRowSelectionChanged(ListSelectionEvent event) {
         if (event.getValueIsAdjusting()) {
-            selected = carsTable.getValueAt(carsTable.getSelectedRow(),0).toString(); // kiválasztott rendszám
-            carsPanel.refreshCarDetails(getSelectedCarValues());
+            selectedNumberPlate = carsTable.getValueAt(carsTable.getSelectedRow(),0).toString(); // kiválasztott rendszám
+            carsPanel.refreshCarDetails(getSelectedCar());
         }
     }
     
     void updateCarsTable() {
         CarsListTableModel tableModel = (CarsListTableModel)(carsTable.getModel());
         tableModel.setRowCount(0);
+//        carsTable.clearSelection();
+//        carsTable.getSelectionModel().clearSelection();
         Object[][] carsObjArray = getCars();
         for (int i = 0; i < carsObjArray.length; ++i) {
             tableModel.addRow(carsObjArray[i]);
         }
         enableRowSelectionChange();
         
-        if (selected != null) {
+        if (selectedNumberPlate != null) {
             for (int i = 0; i < carsTable.getRowCount(); i++) {
-                if (selected.equals(carsTable.getValueAt(i, 0).toString())) {
+                if (selectedNumberPlate.equals(carsTable.getValueAt(i, 0).toString())) {
                     carsTable.setRowSelectionInterval(i, i);
                     break;
                 }
             }
         }
+        carsPanel.refreshCarDetails(getSelectedCar());
     }
     
     void enableRowSelectionChange() {
-//        carsTable.setRowSelectionAllowed(false);
+//        carsTable.setRowSelectionAllowed(true);
         carsTable.setEnabled(true);
     }
     

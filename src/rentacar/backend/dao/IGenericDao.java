@@ -23,14 +23,22 @@ public interface IGenericDao<E, K> {
      * @param entity
      * @return
      */
-    E save(E entity);
+    Boolean save(E entity);
 
+    /**
+     * Egy elem törlése (specifikáción kívüli karbantartáshoz)
+     * 
+     * @param key
+     */
+    void delete(K key);
+    
     /**
      * Egy entitás módosítása
      *
      * @param entity
+     * @return 
      */
-    void update(E entity);
+    Boolean update(E entity);
 
     /**
      * Entitás példány visszaadása megadott osztály és kulcs alapján
@@ -46,4 +54,5 @@ public interface IGenericDao<E, K> {
      * @return
      */
     List<E> findAll();
+
 }

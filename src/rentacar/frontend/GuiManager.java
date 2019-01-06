@@ -31,6 +31,14 @@ public class GuiManager {
         screen.setVisible(true);
     }
     
+    public static String getServiceMessage() {
+        return service.getServiceMessage();
+    }
+    
+    public static void deleteCar(String numberPlate) {
+        service.deleteCar(numberPlate);
+    }
+    
     public static List<Car> listCars() {
         return service.listCars();
     }

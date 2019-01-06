@@ -31,10 +31,13 @@ public abstract class GenericDao<E, K> implements IGenericDao<E, K> {
     }
 
     @Override
-    public abstract E save(E entity);
+    public abstract Boolean save(E entity);
 
     @Override
-    public abstract void update(E entity);
+    public abstract void delete(K key);
+
+    @Override
+    public abstract Boolean update(E entity);
 
     @Override
     public abstract E findById(K key);

@@ -5,13 +5,21 @@
  */
 package rentacar.backend.service;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import rentacar.backend.dao.DaoManager;
 import rentacar.backend.entities.BareCar;
 import rentacar.backend.entities.Car;
 import rentacar.backend.entities.Customer;
 import rentacar.backend.entities.Rent;
+import static rentacar.frontend.components.cars.BaseCard.PHOTO_SELECTED_PATH;
 
 /**
  *
@@ -20,9 +28,11 @@ import rentacar.backend.entities.Rent;
 public class Service implements IService {
     
     DaoManager daoManager;
+    private String serviceMessage;
     
     public Service() {
         daoManager = new DaoManager();
+        serviceMessage = null;
     }
     
     public void closeDB() {
@@ -47,15 +57,34 @@ public class Service implements IService {
     @Override
     public Boolean addCar(BareCar bareCar) {
         Car car = new Car(bareCar);
-        daoManager.save(car);
-        return car.getValid();
+        serviceMessage = car.isValid() ? null : car.getValidationMessage();
+        if (serviceMessage == null && getCar(car.getNumberPlate()) == null) {
+            if (!daoManager.save(car)) {
+                serviceMessage =  "DB-be írás sikertelen (részletek Log-ban)";
+            } else {
+                placeSelectedPhotoIntoSelectedFolder(car);
+            }
+        }
+        return serviceMessage == null;
+    }
+    
+    @Override
+    public void deleteCar(String numberPlate) {
+        daoManager.delete(numberPlate);
     }
     
     @Override
     public Boolean modifyCar(BareCar bareCar) {
         Car car = new Car(bareCar);
-        daoManager.update(car);
-        return car.getValid();
+        serviceMessage = car.isValid() ? null : car.getValidationMessage();
+        if (serviceMessage == null) {
+            if (!daoManager.update(car)) {
+                serviceMessage =  "DB-be írás sikertelen (részletek Log-ban)";
+            } else {
+                placeSelectedPhotoIntoSelectedFolder(car);
+            }
+        }
+        return serviceMessage == null;
     }
     
     @Override
@@ -88,5 +117,38 @@ public class Service implements IService {
     
     @Override
     public void closeRent(int rentId) {
+    }
+
+    public String getServiceMessage() {
+        return serviceMessage;
+    }
+
+    private void placeSelectedPhotoIntoSelectedFolder(Car car) {
+        if (car.getChoosenPhotoPath() == null) {
+            return;
+        }
+        String destinationPathNoExt = PHOTO_SELECTED_PATH + File.separator + car.getNumberPlate().toLowerCase();
+        moveDestinationFile(0,destinationPathNoExt);
+        Path source = new File(car.getChoosenPhotoPath()).toPath();
+        Path destination = new File(destinationPathNoExt + "_0.jpg").toPath();
+        try {
+            Files.copy(source, destination, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException ex) {
+            Logger.getLogger(Service.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void moveDestinationFile(int serial, String destinationPathNoExt) {
+        File destinationFile = new File(destinationPathNoExt + "_" + Integer.toString(serial) + ".jpg");
+        if (destinationFile.exists()) {
+            moveDestinationFile(serial+1, destinationPathNoExt);
+            Path sourcePath = destinationFile.toPath();
+            Path destinationPath = new File(destinationPathNoExt + "_" + Integer.toString(serial+1) + ".jpg").toPath();
+            try {
+                Files.move(sourcePath,destinationPath,StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException ex) {
+                Logger.getLogger(Service.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 }

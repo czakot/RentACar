@@ -49,14 +49,15 @@ public interface IService {
     Boolean addCar(BareCar bareCar);
     
     /**
-     * Autó módosítható adatainak megváltoztatása
+     * Autó törlése, specifikáción kívüli karbantartáshoz
      * 
      * @param numberPlate
-     * @param dailyRentalFee
-     * @param dateOfLastService
-     * @param inService
-     * @param photo
-     * @throws rentacar.backend.service.ServiceException
+     */
+    void deleteCar(String numberPlate);
+    
+    /**
+     * Autó módosítható adatainak megváltoztatása
+     * 
      */
     Boolean modifyCar(BareCar bareCar);
     

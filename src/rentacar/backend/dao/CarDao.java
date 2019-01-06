@@ -26,7 +26,8 @@ public class CarDao extends GenericDao<Car, String> implements ICarDao {
     }
 
     @Override
-    public Car save(Car entity){
+    public Boolean save(Car entity){
+        Boolean success = true;
         String sql = "INSERT INTO USERNAME.CARS " + 
                          "(NUMBER_PLATE, MAKE, MODEL, YEAR_OF_MANUFACTURING, DAILY_RENTAL_FEE, LAST_SERVICE, IN_SERVICE, PHOTO) " + 
                          "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -44,15 +45,34 @@ public class CarDao extends GenericDao<Car, String> implements ICarDao {
             statement.setBoolean(8, entity.getPhoto());
             statement.executeUpdate();
         } catch (SQLException ex) {
+            success = false;
+            System.out.println(ex.toString());
             Logger.getLogger(CarDao.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             close(statement, resultSet);
         }
-        return entity;
+        return success;
+    }
+    
+    @Override
+    public void delete(String numberPlate) {
+        String sql = "DELETE FROM USERNAME.CARS WHERE NUMBER_PLATE = ?";
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            statement = connection.prepareStatement(sql);
+            statement.setString(1, numberPlate);
+            statement.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(CarDao.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            close(statement, resultSet);
+        }
     }
 
     @Override
-    public void update(Car entity){
+    public Boolean update(Car entity){
+            Boolean success = true;
             String sql = "UPDATE USERNAME.CARS " +
                     "SET DAILY_RENTAL_FEE = ?, LAST_SERVICE = ?, IN_SERVICE = ?, PHOTO = ? " +
                     "WHERE NUMBER_PLATE = ?";
@@ -67,10 +87,12 @@ public class CarDao extends GenericDao<Car, String> implements ICarDao {
             statement.setString(5, entity.getNumberPlate());
             statement.executeUpdate();
         } catch (SQLException ex) {
+            success = false;
             Logger.getLogger(CarDao.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             close(statement, resultSet);
         }
+        return success;
     }
 
     @Override

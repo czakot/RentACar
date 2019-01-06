@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.TitledBorder;
+import rentacar.backend.entities.BareCar;
 import rentacar.frontend.components.DetailsMode;
 
 /**
@@ -72,7 +73,7 @@ public class CarDetails extends JPanel {
                 break;
             case EDITOR:
                 modeToReturn = this.mode;
-                editorCard.setEditorContent(detailsCard.getValues());
+                editorCard.setEditorContent(carsPanel.getSelectedCar());
                 break;
             default:
                 throw new AssertionError();
@@ -82,14 +83,14 @@ public class CarDetails extends JPanel {
         cardsLayout.show(cards, mode.toString());
     }
     
-    void refreshCarDetails(String[] details) {
-        if (details == null) {
+    void refreshCarDetails(BareCar car) {
+        if (car == null) {
             carsPanel.disableModifyCarButton();
             switchMode(DetailsMode.EMPTY);
             return;
         }
         
-        detailsCard.refreshValues(details);
+        detailsCard.refreshValues(car);
         switchMode(DetailsMode.DETAILS);
         carsPanel.enableModifyCarButton();
     }
@@ -100,17 +101,15 @@ public class CarDetails extends JPanel {
     }
     
     void discard() {
-        if (mode.equals(DetailsMode.NEW)) {
-            newCard.reset();
-        }
+        ((NewCard)getTopCard()).reset();
         switchMode(modeToReturn);
     }
 
-    public NewCard getTopCard() {
-        NewCard card = null;
+    public Component getTopCard() {
+        Component card = null;
         for (Component component : cards.getComponents()) {
             if (component.isVisible()) {
-                card = (NewCard)component;
+                card = component;
                 break;
             }
         }

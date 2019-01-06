@@ -7,6 +7,8 @@ package rentacar.frontend.components.cars;
 
 import java.awt.event.ActionEvent;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import rentacar.backend.entities.BareCar;
 import rentacar.frontend.GuiManager;
@@ -21,7 +23,6 @@ public class CarsPanel extends JPanel {
     private final CarDetails carDetails;
     private final CarsButtons carsButtons;
 
-    
     public CarsPanel() {
         setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         
@@ -34,8 +35,12 @@ public class CarsPanel extends JPanel {
         add(carsButtons);
     }
     
-    void refreshCarDetails(String[] details) {
-        carDetails.refreshCarDetails(details);
+    void refreshCarDetails(BareCar car) {
+        carDetails.refreshCarDetails(car);
+    }
+    
+    BareCar getSelectedCar() {
+        return carsList.getSelectedCar();
     }
     
     void enableModifyCarButton() {
@@ -75,35 +80,39 @@ public class CarsPanel extends JPanel {
     }
     
     void saveNew(ActionEvent e) {
-        NewCard newCard = carDetails.getTopCard();
+        NewCard newCard = (NewCard)carDetails.getTopCard();
         BareCar newCar = newCard.getBareCar();
 
         carsButtons.disableSaveDiscard();
         if (GuiManager.storeCar(newCar)) {
-            resetCarGui(newCard);
+            resetCarGui();
         } else {
-            carsButtons.enableSaveDiscard();
+            doWhenNotSaved();
         }
     }
 
     void saveEdited(ActionEvent e) {
-        NewCard editorCard = carDetails.getTopCard();
+        NewCard editorCard = (NewCard)carDetails.getTopCard();
         BareCar editedCar = editorCard.getBareCar();
 
         carsButtons.disableSaveDiscard();
         if (GuiManager.updateCar(editedCar)) {
-            resetCarGui(editorCard);
+            resetCarGui();
         } else {
-            carsButtons.enableSaveDiscard();
+            doWhenNotSaved();
         }
     }
+    
+    private void doWhenNotSaved() {
+        JOptionPane.showMessageDialog(null, GuiManager.getServiceMessage(),"Service üzenet(ek)", JOptionPane.WARNING_MESSAGE);
+        carsButtons.enableSaveDiscard();
+    }
         
-    private void resetCarGui(NewCard newCard) {
+    private void resetCarGui() {
+        carDetails.discard();
         carDetails.switchMode(DetailsMode.EMPTY);
-        newCard.reset();
-        carsList.updateCarsTable();
         carsButtons.enableNew();
-        carsButtons.removeSaveActionListeners();            
+        carsList.updateCarsTable();
     }
 }
 

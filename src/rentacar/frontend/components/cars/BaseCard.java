@@ -10,12 +10,19 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import static rentacar.RentACar.BACKGROUND_DISABLED;
-import static rentacar.RentACar.FILE_SEPARATOR;
 import rentacar.utility.ShrinkIcon;
 
 /**
@@ -28,6 +35,7 @@ public class BaseCard extends JPanel{
     final JPanel photo;
     final CarDetails carDetails;
     final static String[] TITLE_STRINGS = {"Rendszám:","Márka:","Típus:","Évjárat:","Bérleti díj/nap:","Utolsó szerviz:","Most szervizben:","Fotó:"};
+    public final static String PHOTO_SELECTED_PATH = System.getProperty("user.dir") + File.separator + "photos_selected";
     
     public BaseCard(CarDetails carDetails) {
         this.carDetails = carDetails;
@@ -67,17 +75,24 @@ public class BaseCard extends JPanel{
 //            StretchIcon image = new StretchIcon(photoPath,true);
         Dimension photoPreferredSize = content.getSize();
         photoPreferredSize.width = photoPreferredSize.height * 4 / 3;
-        photo.setPreferredSize(photoPreferredSize);        
+        photo.setPreferredSize(photoPreferredSize);
+        photo.removeAll();
         if (doIt) {
-            ShrinkIcon image = new ShrinkIcon(photoPath,true);
-            photo.add(new JLabel("",image,JLabel.CENTER),BorderLayout.CENTER);
-        } else {
-            photo.removeAll();
+            BufferedImage preImage = null;
+            try {
+                preImage = ImageIO.read(new File(photoPath));
+            } catch (IOException ex) {
+                Logger.getLogger(BaseCard.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            ShrinkIcon image = new ShrinkIcon(preImage,true);
+            JLabel photoLabel = new JLabel("",image,JLabel.CENTER);
+            photoLabel.setToolTipText(photoPath);
+            photo.add(photoLabel,BorderLayout.CENTER);
         }
         carDetails.validate();
     }
     
-    String fromSelectedJpgs(String filename) {
-        return "photos_selected" + FILE_SEPARATOR + filename.toLowerCase() + ".jpg";
+    public static String fromSelectedJpgs(String filename) {
+        return PHOTO_SELECTED_PATH + File.separator + filename.toLowerCase() + "_0.jpg";
     }
 }

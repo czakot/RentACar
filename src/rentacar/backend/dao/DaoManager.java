@@ -63,18 +63,27 @@ public class DaoManager {
         return cars;
     }
     
-    public void save(Car car){
+    public Boolean save(Car car){
         openConnection();
         carDao.setConnection(connection);
-        carDao.save(car);
+        Boolean successfulDataBaseWriting = carDao.save(car);
+        closeConnection();
+        return successfulDataBaseWriting;
+    }
+    
+    public void delete(String numberPlate){
+        openConnection();
+        carDao.setConnection(connection);
+        carDao.delete(numberPlate);
         closeConnection();
     }
     
-    public void update(Car car){
+    public Boolean update(Car car){
         openConnection();
         carDao.setConnection(connection);
-        carDao.update(car);
+        Boolean successfulDataBaseUpdating =  carDao.update(car);
         closeConnection();
+        return successfulDataBaseUpdating;
     }
     
 /*
