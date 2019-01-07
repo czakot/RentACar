@@ -70,7 +70,7 @@ public class Service implements IService {
     
     @Override
     public void deleteCar(String numberPlate) {
-        daoManager.delete(numberPlate);
+        daoManager.deleteCar(numberPlate);
     }
     
     @Override
@@ -88,8 +88,8 @@ public class Service implements IService {
     }
     
     @Override
-    public List<Customer> listCustomer() {
-        return null;
+    public List<Customer> listCustomers() {
+        return daoManager.listCustomers();
     }
 
     @Override
@@ -98,7 +98,19 @@ public class Service implements IService {
     }
     
     @Override
-    public void addCustomer(String name, String address, String phone) {
+    public Boolean addCustomer(Customer customer) {
+        serviceMessage = customer.validate() ? null : customer.getValidationMessage();
+        if (serviceMessage == null) {
+            if (!daoManager.save(customer)) {
+                serviceMessage =  "DB-be írás sikertelen (részletek Log-ban)";
+            }
+        }
+        return serviceMessage == null;
+    }
+    
+    @Override
+    public void deleteCustomer(String idCustomer) {
+        daoManager.deleteCustomer(idCustomer);
     }
     
     @Override

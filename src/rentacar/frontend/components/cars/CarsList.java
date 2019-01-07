@@ -9,7 +9,6 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -28,12 +27,10 @@ import rentacar.frontend.GuiManager;
  */
 public class CarsList extends JPanel {
     
-    private final JButton helperDeleteButton;
-
     private final CarsPanel carsPanel;
     private final JTable carsTable;
     private String selectedNumberPlate = null;
-    private static final String[] COLUMN_NAMES = {"Rendszám", "Márka", "Típus", "Évjárat", "Bérleti díj", "Szervizelés:", "Szervizben?", "Fénykép"};
+    private static final String[] COLUMN_NAMES = {"Rendszám", "Márka", "Típus", "Évjárat", "Bérleti díj", "Szervizelés", "Szervizben?", "Fénykép"};
 
     public CarsList(CarsPanel carsPanel) {
         this.carsPanel = carsPanel;
@@ -49,7 +46,7 @@ public class CarsList extends JPanel {
         carsTable.getSelectionModel().addListSelectionListener(this::actionRowSelectionChanged);
         add(new JScrollPane(carsTable),BorderLayout.CENTER);
 // ****** specifikáción kívüli autó törlés ******
-        helperDeleteButton = new JButton("Delete Selected");
+         JButton helperDeleteButton = new JButton("Delete Selected");
         helperDeleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -59,7 +56,7 @@ public class CarsList extends JPanel {
             }
         });
         add(helperDeleteButton,BorderLayout.SOUTH);
-// ****** specifikáción kívüli autó törlés ******
+// ****** specifikáción kívüli autó törlés ******/
 
 //        carsPanel.refreshCarDetails(getSelectedCarDetails());
     }
@@ -82,17 +79,6 @@ public class CarsList extends JPanel {
         car.setInService(carsTable.getValueAt(row,5).toString().equals("igen"));
         car.setPhoto(carsTable.getValueAt(row,7).toString().equals("van"));
         car.setChoosenPhotoPath("");
-        
-/*        
-        final int columns = carsTable.getColumnCount();
-        String[] selectedCarValues = new String[columns];
-        
-        for (int column = 0; column < columns;++column) {
-            selectedCarValues[column] = carsTable.getValueAt(row,column).toString();
-        }
-
-        return selectedCarValues;
-*/
 
         return car;
 }
@@ -100,18 +86,21 @@ public class CarsList extends JPanel {
     private Object[][] getCars() {
         final int COLUMN_NUMBER = 8;
         List<Car> cars = GuiManager.listCars();
-        Object[][] carsObjArray = new Object[cars.size()][COLUMN_NUMBER];
-        int rowIdx = 0;
-        for (Car car : cars) {
-            carsObjArray[rowIdx][0] = car.getNumberPlate();
-            carsObjArray[rowIdx][1] = car.getMake();
-            carsObjArray[rowIdx][2] = car.getModel();
-            carsObjArray[rowIdx][3] = car.getYearOfManufacturing();
-            carsObjArray[rowIdx][4] = car.getDailyRentalFee();
-            carsObjArray[rowIdx][5] = car.getLastService();
-            carsObjArray[rowIdx][6] = (car.getInService() ? "igen" : "nem");
-            carsObjArray[rowIdx][7] = (car.getPhoto() ? "van" : "nincs");
-            rowIdx++;
+        Object[][] carsObjArray = null;
+        if (cars != null) {
+            carsObjArray = new Object[cars.size()][COLUMN_NUMBER];
+            int rowIdx = 0;
+            for (Car car : cars) {
+                carsObjArray[rowIdx][0] = car.getNumberPlate();
+                carsObjArray[rowIdx][1] = car.getMake();
+                carsObjArray[rowIdx][2] = car.getModel();
+                carsObjArray[rowIdx][3] = car.getYearOfManufacturing();
+                carsObjArray[rowIdx][4] = car.getDailyRentalFee();
+                carsObjArray[rowIdx][5] = car.getLastService();
+                carsObjArray[rowIdx][6] = (car.getInService() ? "igen" : "nem");
+                carsObjArray[rowIdx][7] = (car.getPhoto() ? "van" : "nincs");
+                rowIdx++;
+            }
         }
         return carsObjArray;
     }

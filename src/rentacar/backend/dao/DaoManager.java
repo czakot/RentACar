@@ -19,6 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.derby.jdbc.EmbeddedDriver;
 import rentacar.backend.entities.Car;
+import rentacar.backend.entities.Customer;
 
 /**
  *
@@ -39,11 +40,13 @@ public class DaoManager {
     private static Connection connection;
     
     private final CarDao carDao;
+    private final CustomerDao customerDao;
 
 
     public DaoManager() {
         initDB();
         carDao = new CarDao(connection);
+        customerDao = new CustomerDao(connection);
     }
     
     public Car getCar(String numberPlate) {
@@ -71,7 +74,7 @@ public class DaoManager {
         return successfulDataBaseWriting;
     }
     
-    public void delete(String numberPlate){
+    public void deleteCar(String numberPlate){
         openConnection();
         carDao.setConnection(connection);
         carDao.delete(numberPlate);
@@ -86,10 +89,29 @@ public class DaoManager {
         return successfulDataBaseUpdating;
     }
     
-/*
-    findAll
-    listCarsAvailable4Rent
-    */ 
+    public Boolean save(Customer customer){
+        openConnection();
+        customerDao.setConnection(connection);
+        Boolean successfulDataBaseWriting = customerDao.save(customer);
+        closeConnection();
+        return successfulDataBaseWriting;
+    }
+    
+    public List<Customer> listCustomers() {
+        openConnection();
+        customerDao.setConnection(connection);
+        List<Customer> customers = customerDao.findAll();
+        closeConnection();
+        return customers;
+    }
+    
+    public void deleteCustomer(String idCustomer){
+        openConnection();
+        customerDao.setConnection(connection);
+        customerDao.delete(idCustomer);
+        closeConnection();
+    }
+    
     public void closeDB() {
         try {
             DriverManager.getConnection(PROTOCOL + ";shutdown=true", USER, PASSWORD);

@@ -17,8 +17,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -54,7 +52,6 @@ public class BaseCard extends JPanel{
     void disableEditingOnTextField(JTextField textField) {
         textField.setOpaque(true);
         textField.setBackground(BACKGROUND_DISABLED);
-//        textField.setEditable(false);
         textField.setFocusable(false);
     }
 

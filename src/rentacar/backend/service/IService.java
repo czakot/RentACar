@@ -58,6 +58,8 @@ public interface IService {
     /**
      * Autó módosítható adatainak megváltoztatása
      * 
+     * @param bareCar
+     * @return 
      */
     Boolean modifyCar(BareCar bareCar);
     
@@ -66,7 +68,7 @@ public interface IService {
      * 
      * @return 
      */
-    List<Customer> listCustomer();
+    List<Customer> listCustomers();
 
     /**
      * Bérlésre jogosult ügyfelek listázása
@@ -78,11 +80,17 @@ public interface IService {
     /**
      * Új ügyfél felvétele
      * 
-     * @param name
-     * @param address
-     * @param phone
+     * @param customer
+     * @return 
      */
-    void addCustomer(String name, String address, String phone);
+    Boolean addCustomer(Customer customer);
+    
+    /**
+     * Ügyfél törlése, specifikáción kívüli karbantartáshoz
+     *
+     * @param idCustomer
+     */
+    void deleteCustomer(String idCustomer);
     
     /**
      * Bérlések listázása

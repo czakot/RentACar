@@ -15,7 +15,6 @@ import javax.swing.JPanel;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.TitledBorder;
 import rentacar.backend.entities.BareCar;
-import rentacar.frontend.components.DetailsMode;
 
 /**
  *
@@ -32,7 +31,7 @@ public class CarDetails extends JPanel {
     private final EditorCard editorCard;
     private DetailsMode mode;
     private DetailsMode modeToReturn;
-    final static String[] TITLE_STRINGS = {"Rendszám:","Márka:","Típus:","Évjárat:","Bérleti díj/nap:","Utolsó szerviz:","Most szervizben:","Fotó:"};
+//    final static String[] TITLE_STRINGS = {"Rendszám:","Márka:","Típus:","Évjárat:","Bérleti díj/nap:","Utolsó szerviz:","Most szervizben:","Fotó:"};
         
     
     public CarDetails(CarsPanel carsPanel) {

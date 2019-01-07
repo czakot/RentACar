@@ -98,6 +98,8 @@ public class Car extends BareCar {
             if (!file.canRead() || !file.exists()) {
                 validationMessage += "Fotó(újonnan kiválasztott) nem létezik vagy nem olvasható!\n";
                 valid = false;
+            } else {
+                setPhoto(true);
             }
         }
         return choosenPhoto;

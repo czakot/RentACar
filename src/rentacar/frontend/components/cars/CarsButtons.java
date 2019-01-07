@@ -40,12 +40,10 @@ public class CarsButtons extends JPanel {
         
         save = new JButton("Mentés");
         save.setVisible(false);
-//        save.setEnabled(false);
         add(save);
         
         discard = new JButton("Eldobás");
         discard.setVisible(false);
-//        discard.setEnabled(false);
         discard.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -96,17 +94,13 @@ public class CarsButtons extends JPanel {
     
     void enableSaveDiscard() {
         save.setVisible(true);
-//        save.setEnabled(true);
         save.addActionListener(ActionListenerForSave);
         discard.setVisible(true);
-//        discard.setEnabled(true);
     }
 
     void disableSaveDiscard() {
         save.setVisible(false);
-//        save.setEnabled(false);
         discard.setVisible(false);
-//        discard.setEnabled(false);
         removeSaveActionListeners();
     }
 }

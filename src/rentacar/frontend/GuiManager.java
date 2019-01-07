@@ -8,6 +8,7 @@ package rentacar.frontend;
 import java.util.List;
 import rentacar.backend.entities.BareCar;
 import rentacar.backend.entities.Car;
+import rentacar.backend.entities.Customer;
 import rentacar.backend.service.Service;
 import rentacar.frontend.windows.RentACarWindowFrame;
 
@@ -54,4 +55,15 @@ public class GuiManager {
     public static Boolean updateCar(BareCar bareCar) {
         return service.modifyCar(bareCar);
     }
+    public static List<Customer> listCustomers() {
+        return service.listCustomers();
+    }
+
+    public static Boolean storeCustomer(Customer customer) {
+        return service.addCustomer(customer);
+    }
+    public static void deleteCustomer(String idCustomer) {
+        service.deleteCustomer(idCustomer);
+    }
+    
 }

@@ -7,12 +7,10 @@ package rentacar.frontend.components.cars;
 
 import java.awt.event.ActionEvent;
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import rentacar.backend.entities.BareCar;
 import rentacar.frontend.GuiManager;
-import rentacar.frontend.components.DetailsMode;
 
 /**
  *
@@ -80,23 +78,17 @@ public class CarsPanel extends JPanel {
     }
     
     void saveNew(ActionEvent e) {
-        NewCard newCard = (NewCard)carDetails.getTopCard();
-        BareCar newCar = newCard.getBareCar();
-
-        carsButtons.disableSaveDiscard();
-        if (GuiManager.storeCar(newCar)) {
-            resetCarGui();
-        } else {
-            doWhenNotSaved();
-        }
+        save(true);
     }
 
     void saveEdited(ActionEvent e) {
-        NewCard editorCard = (NewCard)carDetails.getTopCard();
-        BareCar editedCar = editorCard.getBareCar();
-
+        save(false);
+    }
+    
+    private void save(Boolean trueIfNewFalseIfEdit) {
+        BareCar car = ((NewCard)carDetails.getTopCard()).getBareCar();
         carsButtons.disableSaveDiscard();
-        if (GuiManager.updateCar(editedCar)) {
+        if (trueIfNewFalseIfEdit ? GuiManager.storeCar(car) : GuiManager.updateCar(car)) {
             resetCarGui();
         } else {
             doWhenNotSaved();

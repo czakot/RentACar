@@ -31,14 +31,6 @@ public class DetailsCard extends BaseCard {
         }
     }
     
-    String[] getValues() {
-        String[] text = new String[8];
-        for (int i = 0; i < 8; i++) {
-            text[i] = textField[i].getText();
-        }
-        return text;
-    }
-    
     void refreshValues(BareCar car) {
         
         textField[0].setText(car.getNumberPlate());
