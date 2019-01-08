@@ -5,32 +5,20 @@
  */
 package rentacar.frontend.rents;
 
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.InputVerifier;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComponent;
-import javax.swing.JFileChooser;
-import javax.swing.JFormattedTextField;
-import javax.swing.SwingConstants;
+import javax.swing.JComboBox;
 import javax.swing.ToolTipManager;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.MaskFormatter;
-import javax.swing.text.NumberFormatter;
 import org.jdatepicker.*;
+import rentacar.backend.entities.Car;
+import rentacar.backend.entities.Customer;
 import rentacar.backend.entities.Rent;
-import rentacar.utility.MyFormattedTextField;
 import rentacar.utility.MyTextField;
 
 /**
@@ -39,163 +27,102 @@ import rentacar.utility.MyTextField;
  */
 public class NewCard extends BaseCard {
 
-    final MyFormattedTextField numberPlate;
-    final MyTextField make;
-    final MyTextField model;
-    final MyFormattedTextField yearOfManufacturing;
-    final MyFormattedTextField dailyRentalFee;
-    final JDatePicker lastService;
-    final JCheckBox inService;
-    final JButton photoSelector;
-    Boolean initialPhoto;
-    final JFileChooser fileChooser;
-    String choosenPhotoFullPath;
-    final static String PHOTO_SOURCES_START_PATH = System.getProperty("user.dir") + File.separator + "photos_container";
-    public static final int THIS_YEAR = LocalDate.now().getYear();
-    public static final String VALID_CHARS_FOR_NUMBER_PLATE = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    public static final String MASK_FOR_NUMBER_PLATE = "UUU###";
-    public static final String TOOLTIP_NUMBER_PLATE = "Rendszám: BBB### (BBB: betű, #: számjegy) alakban";
-    public static final String TOOLTIP_MAKE = "Márka: tetszőleges szöveg";
-    public static final String TOOLTIP_MODEL = "Típus: tetszőleges szöveg";
-    public static final String TOOLTIP_YEAR = "Évjárat: 4 számjeggyel írva [1900-tól " + THIS_YEAR + "-ig]";
-    public static final String TOOLTIP_DAILY = "Bérleti díj összege: legyen nem negatív egész";
+    final MyTextField idRent;
+    JComboBox<Customer> customer;
+    JComboBox<Car> car;
+    final MyTextField beginningDate;
+    final JDatePicker expectedReturnDate;
+    final MyTextField returnDate;
+    final MyTextField dailyRentalFee;
+    final MyTextField paidFee;
+    
+    public static final String TOOLTIP_ID = "Az adatbázis által generált egyéni azonosító";
+    public static final String TOOLTIP_BEGINNING_DATE = "Csak a mai naptól indítható bérlés";
+    public static final String TOOLTIP_EXPECTED_RETURN_DATE = "Legkésőbb a következő kötelező szerviz előtti napig";
+    public static final String TOOLTIP_AT_FINISH = "A bérlés lezárásakor aktualizálódnak";
+    public static final String TOOLTIP_DAILY_RENTAL_FEE = "A kiválasztott autó bérleti díja (automatikus)";
     
     public NewCard(RentDetails rentDetails) {
         super(rentDetails);
-        initialPhoto = false;
-        fileChooser = new JFileChooser();
-        fileChooser.setFileFilter(new FileNameExtensionFilter("JPG formátumú képek", "jpg"));
-        choosenPhotoFullPath = null;
+        
         
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 0.5;
         gbc.gridx = 1;
         gbc.gridy = 0;
-        numberPlate = new MyFormattedTextField(createFormatter(MASK_FOR_NUMBER_PLATE,VALID_CHARS_FOR_NUMBER_PLATE));
-        content.add(numberPlate,gbc);
+        idRent = new MyTextField("");
+        idRent.setPreferredSize(new Dimension(303, 27));
+        disableEditingOnTextField(idRent);
+        idRent.setToolTipText(TOOLTIP_ID);
+        content.add(idRent,gbc);
         
         gbc.gridy++;
-        make = new MyTextField("");
-        content.add(make,gbc);
+//        ComboBoxModel<Customer> customerModel = new ComboBoxModel<>()
+        customer = new JComboBox<>();
+        customer.setPreferredSize(new Dimension(303, 27));
+        content.add(customer,gbc);
             
         gbc.gridy++;
-        model = new MyTextField("");
-        content.add(model,gbc);
+//        ComboBoxModel<Car> carModel = new ComboBoxModel<>()
+        car = new JComboBox<>();
+        car.setPreferredSize(new Dimension(303, 27));
+        content.add(car,gbc);
             
         gbc.gridy++;
-        yearOfManufacturing = new MyFormattedTextField();
-        NumberFormatter defaultYearFormatter = new NumberFormatter(new DecimalFormat("#;"));
-        defaultYearFormatter.setValueClass(Integer.class);
-        DefaultFormatterFactory yearFactory = new DefaultFormatterFactory(defaultYearFormatter);
-        yearOfManufacturing.setFormatterFactory(yearFactory);
-        resetDefaultYearOfManufacturing();
-        
-        InputVerifier yearVerifier = new InputVerifier() {
-            @Override
-            public boolean verify(JComponent input) {
-                JFormattedTextField ftf = (JFormattedTextField)input;
-                Boolean inputError = false;
-                try {
-                    yearOfManufacturing.commitEdit();
-                } catch (ParseException ex) {
-                    inputError = true;
-                }
-                int ftfint = (Integer)(ftf.getValue());
-                inputError = inputError || ftfint < 1900 || ftfint > THIS_YEAR;
-                return !inputError;
-            }
-        };
-        yearOfManufacturing.setInputVerifier(yearVerifier);
+        beginningDate = new MyTextField(LocalDate.now().toString());
+        beginningDate.setPreferredSize(new Dimension(303, 27));
+        disableEditingOnTextField(beginningDate);
+        content.add(beginningDate,gbc);
+            
+        gbc.gridy++;
+        expectedReturnDate = new JDatePicker(new Date());
+        content.add(expectedReturnDate,gbc);
 
-        content.add(yearOfManufacturing,gbc);
-        
         gbc.gridy++;
-        dailyRentalFee = new MyFormattedTextField();
-        // esetleg lehetne az eddigi átlag/minimum/maximum bérleti díjat adni kezdőértéknek
-        NumberFormatter defaultDailyFormatter = new NumberFormatter(new DecimalFormat("#;"));
-        defaultDailyFormatter.setValueClass(Integer.class);
-        DefaultFormatterFactory dailyFactory = new DefaultFormatterFactory(defaultDailyFormatter);
-        dailyRentalFee.setFormatterFactory(dailyFactory);
-        resetDefaultDailyRentalFee();
-        
-        InputVerifier dailyVerifier = new InputVerifier() {
-            @Override
-            public boolean verify(JComponent input) {
-                JFormattedTextField ftf = (JFormattedTextField)input;
-                Boolean inputError = false;
-                try {
-                    dailyRentalFee.commitEdit();
-                } catch (ParseException ex) {
-                    inputError = true;
-                }
-                int ftfint = (Integer)(ftf.getValue());
-                inputError = inputError || ftfint < 0;
-                return !inputError;
-            }
-        };
-        dailyRentalFee.setInputVerifier(dailyVerifier);
-        
-        dailyRentalFee.setToolTipText(TOOLTIP_DAILY);
+        returnDate = new MyTextField("");
+        returnDate.setPreferredSize(new Dimension(303, 27));
+        disableEditingOnTextField(returnDate);
+        content.add(returnDate,gbc);
+            
+        gbc.gridy++;
+        dailyRentalFee = new MyTextField("");
+        dailyRentalFee.setPreferredSize(new Dimension(303, 27));
+        disableEditingOnTextField(dailyRentalFee);
         content.add(dailyRentalFee,gbc);
+            
+        gbc.gridy++;
+        paidFee = new MyTextField("0");
+        paidFee.setPreferredSize(new Dimension(303, 27));
+        disableEditingOnTextField(paidFee);
+        content.add(paidFee,gbc);
         
-        gbc.gridy++;
-        lastService = new JDatePicker(new Date());
-        content.add(lastService,gbc);
-
-        gbc.gridy++;
-        inService = new JCheckBox("nem");
-        inService.setHorizontalTextPosition(SwingConstants.LEFT);
-        inService.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                inService.setText(inService.isSelected() ? "igen" : "nem");
-            }
-        });
-        content.add(inService,gbc);
-
-        gbc.gridy++;
-        photoSelector = new JButton("Fotó választás");
-        photoSelector.addActionListener(this::photoSelection);
-        content.add(photoSelector,gbc);
-
         modifyContentEditables();
     }
     
     @Override
     void modifyContentEditables() {
-        setDatePickerWithLocaldate(lastService, LocalDate.now().plusDays(1));
+        setDatePickerWithLocaldate(expectedReturnDate, LocalDate.now());
         ToolTipManager.sharedInstance().setInitialDelay(0);
         ToolTipManager.sharedInstance().setDismissDelay(Integer.MAX_VALUE);
-        if (this.getClass().getName().equals("rentacar.frontend.components.cars.NewCard")) {
-            numberPlate.setToolTipText(TOOLTIP_NUMBER_PLATE);
-            make.setToolTipText(TOOLTIP_MAKE);
-            model.setToolTipText(TOOLTIP_MODEL);
-            yearOfManufacturing.setToolTipText(TOOLTIP_YEAR);
+        if (this.getClass().getName().equals("rentacar.frontend.components.rents.NewCard")) {
+            beginningDate.setToolTipText(TOOLTIP_BEGINNING_DATE);
+            expectedReturnDate.setToolTipText(TOOLTIP_EXPECTED_RETURN_DATE);
+            returnDate.setToolTipText(TOOLTIP_AT_FINISH);
+            dailyRentalFee.setToolTipText(TOOLTIP_DAILY_RENTAL_FEE);
+            paidFee.setToolTipText(TOOLTIP_AT_FINISH);
         }
     }
     
     void reset() {
-        numberPlate.setText("");
-        make.setText("");
-        model.setText("");
-        resetDefaultYearOfManufacturing();
-        resetDefaultDailyRentalFee();
-        setDatePickerWithLocaldate(lastService, LocalDate.now().plusDays(1)); // holnap => nem érvényes => kelljen szerkeszteni
-        inService.setSelected(false);
-        photo.removeAll();
-        initialPhoto = false;
-        choosenPhotoFullPath = null;
-    }
-    
-    private void resetDefaultYearOfManufacturing() {
-        yearOfManufacturing.setValue(0);
-        yearOfManufacturing.setText("");
-    }
-    
-    private void resetDefaultDailyRentalFee() {
-        dailyRentalFee.setValue(-1);
+        idRent.setText("");
+        // reset customer combo
+        // reset car combo
+        beginningDate.setText(LocalDate.now().toString());
+        setDatePickerWithLocaldate(expectedReturnDate, LocalDate.now());
+        returnDate.setText("");
         dailyRentalFee.setText("");
+        paidFee.setText("0");
     }
     
     private void setDatePickerWithLocaldate(JDatePicker datePicker, LocalDate localDate) {
@@ -215,32 +142,17 @@ public class NewCard extends BaseCard {
         return formatter;
     }
     
-    private void photoSelection(ActionEvent e) {
-        fileChooser.setCurrentDirectory(new File(PHOTO_SOURCES_START_PATH));
-        int returnValue = fileChooser.showDialog(null, "Fotó kiválasztása");
-        if (returnValue == JFileChooser.APPROVE_OPTION) {
-            try {
-            choosenPhotoFullPath = fileChooser.getSelectedFile().getCanonicalFile().toString();
-            } catch (IOException ex) {
-                Logger.getLogger(NewCard.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            presentPhoto(Boolean.TRUE, choosenPhotoFullPath);
-        }
-        this.getTopLevelAncestor().validate();
-    }
-    
     Rent getRent() {
-        Rent rent = new Rent(numberPlate.getText());
-        rent.setMake(make.getText());
-        rent.setModel(model.getText());
-        rent.setYearOfManufacturing((Integer)yearOfManufacturing.getValue());
-        rent.setDailyRentalFee((Integer)dailyRentalFee.getValue());
-        rent.setLastService(LocalDate.of(lastService.getModel().getYear(),
-                                            lastService.getModel().getMonth()+1, 
-                                            lastService.getModel().getDay()));
-        rent.setInService(inService.isSelected());
-        rent.setPhoto(initialPhoto);
-        rent.setChoosenPhotoPath(choosenPhotoFullPath);
+        Rent rent = new Rent();
+        rent.setIdCustomer(Integer.valueOf("customer ComboBox-ból"));
+        rent.setNumberPlate("car ComboBox-ból");
+        rent.setBeginningDate(LocalDate.now());
+        rent.setExpectedReturnDate(LocalDate.of(expectedReturnDate.getModel().getYear(),
+                                            expectedReturnDate.getModel().getMonth()+1, 
+                                            expectedReturnDate.getModel().getDay()));
+        rent.setReturnDate(null);
+        rent.setDailyRentalFee(Integer.valueOf(dailyRentalFee.getText()));
+        rent.setPaidFee(0);
         
         return rent;
     }

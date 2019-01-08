@@ -69,6 +69,10 @@ public class GuiManager {
         service.deleteCustomer(idCustomer);
     }
 
+    public static Customer getCustomer(String idCustomer) {
+        service.getCustomer(idCustomer);
+    }
+
     public static Boolean storeRent(Rent rent) {
         return service.addRent(rent);
     }

@@ -10,7 +10,6 @@ import java.awt.GridBagConstraints;
 import javax.swing.InputVerifier;
 import javax.swing.JComponent;
 import javax.swing.ToolTipManager;
-import org.jdatepicker.DatePicker;
 import rentacar.backend.entities.Customer;
 import static rentacar.backend.entities.Customer.VALID_CHARS_FOR_PHONE_NUMBER;
 import rentacar.utility.MyTextField;
@@ -22,14 +21,10 @@ import rentacar.utility.MyTextField;
 public class NewCard extends BaseCard {
 
     
-    final MyTextField idRent;
-//    idCustomer; // legördülő
-//    numberPlate; // legördülő
-    final MyTextField beginningDate;
-    DatePicker expectedReturnDate; // datepicker
-    final MyTextField returnDate;
-    final MyTextField   dailyRentalFee;
-    final MyTextField paidFee;
+    final MyTextField idCustomer;
+    final MyTextField name;
+    final MyTextField address;
+    final MyTextField phoneNumber;
     
     public static final String TOOLTIP_ID = "Az adatbázis által generált egyéni azonosító";
     public static final String TOOLTIP_NAME = "Név: tetszőleges szöveg, de legalább 3 karakter hosszú";
@@ -47,21 +42,26 @@ public class NewCard extends BaseCard {
         gbc.gridy = 0;
         idCustomer = new MyTextField("");
         idCustomer.setPreferredSize(new Dimension(303, 27));
+        disableEditingOnTextField(idCustomer);
+        idCustomer.setToolTipText(TOOLTIP_ID);
         content.add(idCustomer,gbc);
         
         gbc.gridy++;
         name = new MyTextField("");
         name.setPreferredSize(new Dimension(303, 27));
+        name.setToolTipText(TOOLTIP_NAME);
         content.add(name,gbc);
             
         gbc.gridy++;
         address = new MyTextField("");
         address.setPreferredSize(new Dimension(303, 27));
+        address.setToolTipText(TOOLTIP_ADDRESS);
         content.add(address,gbc);
             
         gbc.gridy++;
         phoneNumber = new MyTextField("");
         phoneNumber.setPreferredSize(new Dimension(303, 27));
+        phoneNumber.setToolTipText(TOOLTIP_PHONE);
         
         InputVerifier phoneVerifier = new InputVerifier() {
             @Override
@@ -78,20 +78,8 @@ public class NewCard extends BaseCard {
 
         content.add(phoneNumber,gbc);
         
-        modifyContentEditables();
-    }
-    
-    @Override
-    void modifyContentEditables() {
-        disableEditingOnTextField(idCustomer);
         ToolTipManager.sharedInstance().setInitialDelay(0);
         ToolTipManager.sharedInstance().setDismissDelay(Integer.MAX_VALUE);
-        if (this.getClass().getName().equals("rentacar.frontend.components.customers.NewCard")) {
-            idCustomer.setToolTipText(TOOLTIP_ID);
-            name.setToolTipText(TOOLTIP_NAME);
-            address.setToolTipText(TOOLTIP_ADDRESS);
-            phoneNumber.setToolTipText(TOOLTIP_PHONE);
-        }
     }
     
     void reset() {

@@ -48,8 +48,4 @@ public class BaseCard extends JPanel{
             content.add(new JLabel(TITLE_STRINGS[gbc.gridy] + "  "),gbc); // cimkék: ID-től telefonszámig
         }
     }
-
-    void modifyContentEditables() {
-    }
-    
 }

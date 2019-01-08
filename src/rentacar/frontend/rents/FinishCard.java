@@ -5,12 +5,10 @@
  */
 package rentacar.frontend.rents;
 
-import rentacar.frontend.cars.CarDetails;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import rentacar.backend.entities.BareCar;
 
 /**
  *
@@ -24,6 +22,15 @@ public class FinishCard extends NewCard {
     
     @Override
     void modifyContentEditables() {
+    final MyTextField idRent;
+    JComboBox<Customer> customer;
+    JComboBox<Car> car;
+    final MyTextField beginningDate;
+    final JDatePicker expectedReturnDate;
+    final MyTextField returnDate;
+    final MyTextField dailyRentalFee;
+    final MyTextField paidFee;
+    
         disableEditingOnTextField(numberPlate);
         disableEditingOnTextField(make);
         disableEditingOnTextField(model);

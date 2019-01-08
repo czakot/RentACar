@@ -7,7 +7,9 @@ package rentacar.frontend.rents;
 
 import java.awt.GridBagConstraints;
 import javax.swing.JTextField;
+import rentacar.backend.entities.Customer;
 import rentacar.backend.entities.Rent;
+import rentacar.frontend.GuiManager;
 
 /**
  *
@@ -33,15 +35,15 @@ public class DetailsCard extends BaseCard {
     
     void refreshValues(Rent rent) {
         
-        textField[0].setText(rent.getNumberPlate());
-        textField[1].setText(rent.getMake());
-        textField[2].setText(rent.getModel());
-        textField[3].setText(Integer.toString(rent.getYearOfManufacturing()));
-        textField[4].setText(Integer.toString(rent.getDailyRentalFee()));
-        textField[5].setText(rent.getLastService().toString());
-        textField[6].setText(rent.getInService() ? "igen" : "nem");
-        textField[7].setText(rent.getPhoto() ? "van" : "nincs");
-        
-        presentPhoto(rent.getPhoto(), fromSelectedJpgs(rent.getNumberPlate()));
+        textField[0].setText(rent.getIdRent().toString());
+        Customer customer = GuiManager.getCustomer(Integer.toString(rent.getIdCustomer()));
+        textField[1].setText(customer.getName() + " (ID: " + customer.getIdCustomer() + ")");
+        textField[1].setToolTipText("Cím: " + customer.getAddress() + "\nTelefon: " + customer.getPhone());
+        textField[2].setText(rent.getNumberPlate());
+        textField[3].setText(rent.getBeginningDate().toString());
+        textField[4].setText(rent.getExpectedReturnDate().toString());
+        textField[5].setText((rent.getReturnDate() == null) ? "Folyamatban lévő bérlés" : rent.getReturnDate().toString());
+        textField[6].setText(rent.getDailyRentalFee().toString());
+        textField[7].setText(rent.getPaidFee().toString());
     }
 }
