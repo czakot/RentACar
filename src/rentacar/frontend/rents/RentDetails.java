@@ -28,7 +28,7 @@ public class RentDetails extends JPanel {
     private final JPanel emptyCard;
     private final DetailsCard detailsCard;
     private final NewCard newCard;
-    private final FinishCard finishCard;
+//    private final FinishCard finishCard;
     private DetailsMode mode;
     private DetailsMode modeToReturn;
         
@@ -44,14 +44,14 @@ public class RentDetails extends JPanel {
         emptyCard.add(new JLabel("Nincs kiválasztott vagy megjeleníthető elem",JLabel.CENTER),BorderLayout.CENTER);
         
         newCard = new NewCard(this);
-        finishCard = new FinishCard(this);
+//        finishCard = new FinishCard(this);
         detailsCard = new DetailsCard(this);
         
         cardsLayout = new CardLayout();
         cards = new JPanel(cardsLayout);
         cards.add(emptyCard,DetailsMode.EMPTY.toString());
         cards.add(newCard,DetailsMode.NEW.toString());
-        cards.add(finishCard,DetailsMode.FINISHER.toString());
+//        cards.add(finishCard,DetailsMode.FINISHER.toString());
         cards.add(detailsCard,DetailsMode.DETAILS.toString());
         switchMode(DetailsMode.EMPTY);
         
@@ -71,7 +71,7 @@ public class RentDetails extends JPanel {
                 break;
             case FINISHER:
                 modeToReturn = this.mode;
-                finishCard.setEditorContent(rentsPanel.getSelectedRent());
+//                finishCard.setEditorContent(rentsPanel.getSelectedRent());
                 break;
             default:
                 throw new AssertionError();

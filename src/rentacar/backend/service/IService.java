@@ -92,12 +92,17 @@ public interface IService {
      */
     void deleteCustomer(String idCustomer);
     
-    /**
+    public Customer getCustomer(String idCustomer);
+
+        /**
      * Bérlések listázása
      * 
      * @return 
      */
     List<Rent> listRents();
+    
+
+    public Boolean finishRent(Rent rent);
     
     /**
      * Bérlések szűrt listázása
@@ -116,12 +121,5 @@ public interface IService {
      * @param numberPlate
      * @param expectedReturnDate 
      */
-    void addRent(int customerId, String numberPlate, LocalDate expectedReturnDate);
-    
-    /**
-     * Függő bérlés lezárása
-     * 
-     * @param rentId 
-     */
-    void closeRent(int rentId);
+    Boolean addRent(Rent rent);
 }

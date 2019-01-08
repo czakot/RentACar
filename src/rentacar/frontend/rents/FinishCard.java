@@ -9,6 +9,7 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import rentacar.backend.entities.Rent;
 
 /**
  *
@@ -22,23 +23,21 @@ public class FinishCard extends NewCard {
     
     @Override
     void modifyContentEditables() {
-    final MyTextField idRent;
-    JComboBox<Customer> customer;
-    JComboBox<Car> car;
-    final MyTextField beginningDate;
-    final JDatePicker expectedReturnDate;
-    final MyTextField returnDate;
-    final MyTextField dailyRentalFee;
-    final MyTextField paidFee;
-    
-        disableEditingOnTextField(numberPlate);
-        disableEditingOnTextField(make);
-        disableEditingOnTextField(model);
-        disableEditingOnTextField(yearOfManufacturing);
+        disableEditingOnTextField(idRent);
+        // * JComboBox<Customer> customer;
+        // * JComboBox<Car> car;
+        disableEditingOnTextField(beginningDate);
+        // * JDatePicker expectedReturnDate
+        // - final MyTextField returnDate;
+        disableEditingOnTextField(dailyRentalFee);
+        disableEditingOnTextField(paidFee);
     }
     
     void setEditorContent(Rent rent) {
-        numberPlate.setText(rent.getNumberPlate());
+        idRent.setText(rent.getIdRent().toString());
+        // customer ComboBox <= rent.getIdCustomer()
+        // car ComboBox <= rent.getNumberPlate()
+  /*      
         make.setText(rent.getMake());
         model.setText(rent.getModel());
         yearOfManufacturing.setText(Integer.toString(rent.getYearOfManufacturing()));
@@ -56,7 +55,6 @@ public class FinishCard extends NewCard {
         inService.setSelected(rent.getInService());
         initialPhoto = rent.getPhoto();
         photoSelector.setText("Fotó választás");
-        
-        presentPhoto(rent.getPhoto(), fromSelectedJpgs(rent.getNumberPlate()));
+*/        
     }
 }

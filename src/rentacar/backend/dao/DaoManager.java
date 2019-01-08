@@ -41,12 +41,14 @@ public class DaoManager {
     
     private final CarDao carDao;
     private final CustomerDao customerDao;
+    private final RentDao rentDao;
 
 
     public DaoManager() {
         initDB();
         carDao = new CarDao(connection);
         customerDao = new CustomerDao(connection);
+        rentDao = new RentDao(connection);
     }
     
     public Car getCar(String numberPlate) {
@@ -105,10 +107,25 @@ public class DaoManager {
         return customers;
     }
     
+    public Customer getCustomer(String idCustomer) {
+        openConnection();
+        customerDao.setConnection(connection);
+        Customer customer = customerDao.findById(idCustomer);
+        closeConnection();
+        return customer;
+    }
+    
     public void deleteCustomer(String idCustomer){
         openConnection();
         customerDao.setConnection(connection);
         customerDao.delete(idCustomer);
+        closeConnection();
+    }
+    
+    public void deleteRent(String idRent){
+        openConnection();
+        rentDao.setConnection(connection);
+        rentDao.delete(idRent);
         closeConnection();
     }
     

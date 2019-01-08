@@ -70,7 +70,7 @@ public class GuiManager {
     }
 
     public static Customer getCustomer(String idCustomer) {
-        service.getCustomer(idCustomer);
+        return service.getCustomer(idCustomer);
     }
 
     public static Boolean storeRent(Rent rent) {
@@ -80,6 +80,7 @@ public class GuiManager {
     public static Boolean updateRent(Rent rent) {
         return service.finishRent(rent);
     }
+
     public static void deleteRent(String idRent) {
         service.deleteRent(idRent);
     }

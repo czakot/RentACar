@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -109,6 +108,11 @@ public class Service implements IService {
     }
     
     @Override
+    public Customer getCustomer(String idCustomer) {
+        return daoManager.getCustomer(idCustomer);
+    }
+
+    @Override
     public void deleteCustomer(String idCustomer) {
         daoManager.deleteCustomer(idCustomer);
     }
@@ -124,13 +128,19 @@ public class Service implements IService {
     }
     
     @Override
-    public void addRent(int customerId, String numberPlate, LocalDate expectedReturnDate) {
+    public Boolean addRent(Rent rent) {
+        return true;
     }
     
     @Override
-    public void closeRent(int rentId) {
+    public Boolean finishRent(Rent rent) {
+        return true;
     }
 
+    public void deleteRent(String idRent) {
+        daoManager.deleteRent(idRent);
+    }
+    
     public String getServiceMessage() {
         return serviceMessage;
     }
