@@ -7,9 +7,9 @@ package rentacar.frontend.windows;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import rentacar.frontend.components.rents.RentsPanel;
-import rentacar.frontend.components.customers.CustomersPanel;
-import rentacar.frontend.components.cars.CarsPanel;
+import rentacar.frontend.rents.RentsPanel;
+import rentacar.frontend.customers.CustomersPanel;
+import rentacar.frontend.cars.CarsPanel;
 import java.awt.HeadlessException;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rentacar.frontend.components.cars;
+package rentacar.frontend.customers;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
@@ -14,28 +14,26 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.TitledBorder;
-import rentacar.backend.entities.BareCar;
+import rentacar.backend.entities.Customer;
 
 /**
  *
  * @author czakot
  */
-public class CarDetails extends JPanel {
+public class CustomerDetails extends JPanel {
     
-    private final CarsPanel carsPanel;
+    private final CustomersPanel customersPanel;
     private final JPanel cards;
     private final CardLayout cardsLayout;
     private final JPanel emptyCard;
     private final DetailsCard detailsCard;
     private final NewCard newCard;
-    private final EditorCard editorCard;
     private DetailsMode mode;
     private DetailsMode modeToReturn;
-//    final static String[] TITLE_STRINGS = {"Rendszám:","Márka:","Típus:","Évjárat:","Bérleti díj/nap:","Utolsó szerviz:","Most szervizben:","Fotó:"};
         
     
-    public CarDetails(CarsPanel carsPanel) {
-        this.carsPanel = carsPanel;
+    public CustomerDetails(CustomersPanel customersPanel) {
+        this.customersPanel = customersPanel;
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createCompoundBorder(
                       BorderFactory.createEmptyBorder(0, 4, 0, 4),
@@ -45,14 +43,12 @@ public class CarDetails extends JPanel {
         emptyCard.add(new JLabel("Nincs kiválasztott vagy megjeleníthető elem",JLabel.CENTER),BorderLayout.CENTER);
         
         newCard = new NewCard(this);
-        editorCard = new EditorCard(this);
         detailsCard = new DetailsCard(this);
         
         cardsLayout = new CardLayout();
         cards = new JPanel(cardsLayout);
         cards.add(emptyCard,DetailsMode.EMPTY.toString());
         cards.add(newCard,DetailsMode.NEW.toString());
-        cards.add(editorCard,DetailsMode.EDITOR.toString());
         cards.add(detailsCard,DetailsMode.DETAILS.toString());
         switchMode(DetailsMode.EMPTY);
         
@@ -70,10 +66,6 @@ public class CarDetails extends JPanel {
             case NEW:
                 modeToReturn = this.mode;
                 break;
-            case EDITOR:
-                modeToReturn = this.mode;
-                editorCard.setEditorContent(carsPanel.getSelectedCar());
-                break;
             default:
                 throw new AssertionError();
         }
@@ -82,16 +74,14 @@ public class CarDetails extends JPanel {
         cardsLayout.show(cards, mode.toString());
     }
     
-    void refreshCarDetails(BareCar car) {
-        if (car == null) {
-            carsPanel.disableModifyCarButton();
+    void refreshCarDetails(Customer customer) {
+        if (customer == null) {
             switchMode(DetailsMode.EMPTY);
             return;
         }
         
-        detailsCard.refreshValues(car);
+        detailsCard.refreshValues(customer);
         switchMode(DetailsMode.DETAILS);
-        carsPanel.enableModifyCarButton();
     }
     
     private void setDetailsTitle(DetailsMode mode) {

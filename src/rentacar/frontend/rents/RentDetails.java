@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rentacar.frontend.components.customers;
+package rentacar.frontend.rents;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
@@ -14,26 +14,27 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.TitledBorder;
-import rentacar.backend.entities.Customer;
+import rentacar.backend.entities.Rent;
 
 /**
  *
  * @author czakot
  */
-public class CustomerDetails extends JPanel {
+public class RentDetails extends JPanel {
     
-    private final CustomersPanel customersPanel;
+    private final RentsPanel rentsPanel;
     private final JPanel cards;
     private final CardLayout cardsLayout;
     private final JPanel emptyCard;
     private final DetailsCard detailsCard;
     private final NewCard newCard;
+    private final FinishCard finishCard;
     private DetailsMode mode;
     private DetailsMode modeToReturn;
         
     
-    public CustomerDetails(CustomersPanel customersPanel) {
-        this.customersPanel = customersPanel;
+    public RentDetails(RentsPanel rentsPanel) {
+        this.rentsPanel = rentsPanel;
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createCompoundBorder(
                       BorderFactory.createEmptyBorder(0, 4, 0, 4),
@@ -43,12 +44,14 @@ public class CustomerDetails extends JPanel {
         emptyCard.add(new JLabel("Nincs kiválasztott vagy megjeleníthető elem",JLabel.CENTER),BorderLayout.CENTER);
         
         newCard = new NewCard(this);
+        finishCard = new FinishCard(this);
         detailsCard = new DetailsCard(this);
         
         cardsLayout = new CardLayout();
         cards = new JPanel(cardsLayout);
         cards.add(emptyCard,DetailsMode.EMPTY.toString());
         cards.add(newCard,DetailsMode.NEW.toString());
+        cards.add(finishCard,DetailsMode.FINISHER.toString());
         cards.add(detailsCard,DetailsMode.DETAILS.toString());
         switchMode(DetailsMode.EMPTY);
         
@@ -66,6 +69,10 @@ public class CustomerDetails extends JPanel {
             case NEW:
                 modeToReturn = this.mode;
                 break;
+            case FINISHER:
+                modeToReturn = this.mode;
+                finishCard.setEditorContent(rentsPanel.getSelectedRent());
+                break;
             default:
                 throw new AssertionError();
         }
@@ -74,19 +81,21 @@ public class CustomerDetails extends JPanel {
         cardsLayout.show(cards, mode.toString());
     }
     
-    void refreshCarDetails(Customer customer) {
-        if (customer == null) {
+    void refreshRentDetails(Rent rent) {
+        if (rent == null) {
+            rentsPanel.disableFinishRentButton();
             switchMode(DetailsMode.EMPTY);
             return;
         }
         
-        detailsCard.refreshValues(customer);
+        detailsCard.refreshValues(rent);
         switchMode(DetailsMode.DETAILS);
+        rentsPanel.enableFinishRentButton();
     }
     
     private void setDetailsTitle(DetailsMode mode) {
         ((TitledBorder)(((CompoundBorder)(this.getBorder())).getInsideBorder())).setTitle(mode.getTitle());
-        repaint();
+        validate(); //repaint();
     }
     
     void discard() {

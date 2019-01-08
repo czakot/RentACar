@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rentacar.frontend.components.cars;
+package rentacar.frontend.rents;
 
 import javax.swing.table.DefaultTableModel;
 
@@ -11,9 +11,9 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author czakot
  */
-class CarsListTableModel extends DefaultTableModel{
+class RentsListTableModel extends DefaultTableModel{
 
-    CarsListTableModel(Object[][] cars, String[] columnNames) {
+    RentsListTableModel(Object[][] cars, String[] columnNames) {
         super(cars, columnNames);
     }
 

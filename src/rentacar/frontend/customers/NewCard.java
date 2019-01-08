@@ -3,13 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rentacar.frontend.components.customers;
+package rentacar.frontend.customers;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import javax.swing.InputVerifier;
 import javax.swing.JComponent;
 import javax.swing.ToolTipManager;
+import org.jdatepicker.DatePicker;
 import rentacar.backend.entities.Customer;
 import static rentacar.backend.entities.Customer.VALID_CHARS_FOR_PHONE_NUMBER;
 import rentacar.utility.MyTextField;
@@ -20,10 +21,16 @@ import rentacar.utility.MyTextField;
  */
 public class NewCard extends BaseCard {
 
-    final MyTextField idCustomer;
-    final MyTextField name;
-    final MyTextField address;
-    final MyTextField phoneNumber;
+    
+    final MyTextField idRent;
+//    idCustomer; // legördülő
+//    numberPlate; // legördülő
+    final MyTextField beginningDate;
+    DatePicker expectedReturnDate; // datepicker
+    final MyTextField returnDate;
+    final MyTextField   dailyRentalFee;
+    final MyTextField paidFee;
+    
     public static final String TOOLTIP_ID = "Az adatbázis által generált egyéni azonosító";
     public static final String TOOLTIP_NAME = "Név: tetszőleges szöveg, de legalább 3 karakter hosszú";
     public static final String TOOLTIP_ADDRESS = "Cím: tetszőleges szöveg";

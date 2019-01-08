@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rentacar.frontend.components.customers;
+package rentacar.frontend.customers;
 
 import javax.swing.BoxLayout;
 import javax.swing.JOptionPane;

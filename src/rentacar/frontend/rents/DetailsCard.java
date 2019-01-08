@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rentacar.frontend.components.cars;
+package rentacar.frontend.rents;
 
 import java.awt.GridBagConstraints;
 import javax.swing.JTextField;
-import rentacar.backend.entities.BareCar;
+import rentacar.backend.entities.Rent;
 
 /**
  *
@@ -17,8 +17,8 @@ public class DetailsCard extends BaseCard {
 
     private final JTextField[] textField;
     
-    public DetailsCard(CarDetails carDetails) {
-        super(carDetails);
+    public DetailsCard(RentDetails rentDetails) {
+        super(rentDetails);
         textField = new JTextField[8];
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -31,17 +31,17 @@ public class DetailsCard extends BaseCard {
         }
     }
     
-    void refreshValues(BareCar car) {
+    void refreshValues(Rent rent) {
         
-        textField[0].setText(car.getNumberPlate());
-        textField[1].setText(car.getMake());
-        textField[2].setText(car.getModel());
-        textField[3].setText(Integer.toString(car.getYearOfManufacturing()));
-        textField[4].setText(Integer.toString(car.getDailyRentalFee()));
-        textField[5].setText(car.getLastService().toString());
-        textField[6].setText(car.getInService() ? "igen" : "nem");
-        textField[7].setText(car.getPhoto() ? "van" : "nincs");
+        textField[0].setText(rent.getNumberPlate());
+        textField[1].setText(rent.getMake());
+        textField[2].setText(rent.getModel());
+        textField[3].setText(Integer.toString(rent.getYearOfManufacturing()));
+        textField[4].setText(Integer.toString(rent.getDailyRentalFee()));
+        textField[5].setText(rent.getLastService().toString());
+        textField[6].setText(rent.getInService() ? "igen" : "nem");
+        textField[7].setText(rent.getPhoto() ? "van" : "nincs");
         
-        presentPhoto(car.getPhoto(), fromSelectedJpgs(car.getNumberPlate()));
+        presentPhoto(rent.getPhoto(), fromSelectedJpgs(rent.getNumberPlate()));
     }
 }

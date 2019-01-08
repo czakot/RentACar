@@ -3,15 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rentacar.frontend.components.customers;
+package rentacar.frontend.cars;
 
 /**
  *
  * @author czakot
  */
 public enum DetailsMode {
-    DETAILS("Kiválasztott ügyfél adatai"),
-    NEW("Új ügyfél felvétele"),
+    DETAILS("Kiválasztott autó adatai"),
+    NEW("Új autó felvétele"),
+    EDITOR("Kiválasztott autó adatainak módosítása"),
     EMPTY(" ");
     private final String title;
 

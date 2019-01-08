@@ -7,7 +7,7 @@ package rentacar.backend.entities;
 
 import java.io.File;
 import java.time.LocalDate;
-import static rentacar.frontend.components.cars.BaseCard.fromSelectedJpgs;
+import static rentacar.frontend.cars.BaseCard.fromSelectedJpgs;
 
 /**
  *

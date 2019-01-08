@@ -19,7 +19,7 @@ import rentacar.backend.entities.BareCar;
 import rentacar.backend.entities.Car;
 import rentacar.backend.entities.Customer;
 import rentacar.backend.entities.Rent;
-import static rentacar.frontend.components.cars.BaseCard.PHOTO_SELECTED_PATH;
+import static rentacar.frontend.cars.BaseCard.PHOTO_SELECTED_PATH;
 
 /**
  *

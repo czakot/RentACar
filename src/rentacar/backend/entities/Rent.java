@@ -19,6 +19,7 @@ public class Rent {
     private LocalDate beginningDate;
     private LocalDate expectedReturnDate;
     private LocalDate returnDate;
+    private Integer dailyRentalFee;
     private Integer paidFee;
 
     public Rent() {
@@ -85,6 +86,14 @@ public class Rent {
 
     public void setReturnDate(LocalDate returnDate) {
         this.returnDate = returnDate;
+    }
+
+    public Integer getDailyRentalFee() {
+        return dailyRentalFee;
+    }
+
+    public void setDailyRentalFee(Integer dailyRentalFee) {
+        this.dailyRentalFee = dailyRentalFee;
     }
 
     public Integer getPaidFee() {

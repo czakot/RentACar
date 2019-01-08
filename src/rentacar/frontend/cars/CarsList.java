@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rentacar.frontend.components.cars;
+package rentacar.frontend.cars;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -50,7 +50,7 @@ public class CarsList extends JPanel {
         helperDeleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                GuiManager.deleteCar(selectedNumberPlate);
+                GuiManager.deleteRent(selectedNumberPlate);
                 selectedNumberPlate = null;
                 updateCarsTable();
             }
