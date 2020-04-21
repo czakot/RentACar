@@ -13,31 +13,16 @@ import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import rentacar.backend.dao.DaoManager;
 import rentacar.backend.entities.BareCar;
 import rentacar.backend.entities.Car;
-import rentacar.backend.entities.Customer;
-import rentacar.backend.entities.Rent;
 import static rentacar.frontend.cars.BaseCard.PHOTO_SELECTED_PATH;
 
 /**
  *
  * @author czakot
  */
-public class Service implements IService {
+public class CarService extends AService implements ICarService{
     
-    DaoManager daoManager;
-    private String serviceMessage;
-    
-    public Service() {
-        daoManager = new DaoManager();
-        serviceMessage = null;
-    }
-    
-    public void closeDB() {
-        daoManager.closeDB();
-    }
-
     @Override
     public Car getCar(String numberPlate) {
         return daoManager.getCar(numberPlate);
@@ -56,14 +41,15 @@ public class Service implements IService {
     @Override
     public Boolean addCar(BareCar bareCar) {
         Car car = new Car(bareCar);
-        serviceMessage = car.isValid() ? null : car.getValidationMessage();
+        String serviceMessage = car.isValid() ? null : car.getValidationMessage();
         if (serviceMessage == null && getCar(car.getNumberPlate()) == null) {
             if (!daoManager.save(car)) {
-                serviceMessage =  "DB-be írás sikertelen (részletek Log-ban)";
+                serviceMessage = "DB-be írás sikertelen (részletek Log-ban)";
             } else {
                 placeSelectedPhotoIntoSelectedFolder(car);
             }
         }
+        ServicesCommon.setServiceMessage(serviceMessage);
         return serviceMessage == null;
     }
     
@@ -75,7 +61,7 @@ public class Service implements IService {
     @Override
     public Boolean modifyCar(BareCar bareCar) {
         Car car = new Car(bareCar);
-        serviceMessage = car.isValid() ? null : car.getValidationMessage();
+        String serviceMessage = car.isValid() ? null : car.getValidationMessage();
         if (serviceMessage == null) {
             if (!daoManager.update(car)) {
                 serviceMessage =  "DB-be írás sikertelen (részletek Log-ban)";
@@ -83,66 +69,8 @@ public class Service implements IService {
                 placeSelectedPhotoIntoSelectedFolder(car);
             }
         }
+        ServicesCommon.setServiceMessage(serviceMessage);
         return serviceMessage == null;
-    }
-    
-    @Override
-    public List<Customer> listCustomers() {
-        return daoManager.listCustomers();
-    }
-
-    @Override
-    public List<Customer> listCustomersEligible4Rent() {
-        return null;
-    }
-    
-    @Override
-    public Boolean addCustomer(Customer customer) {
-        serviceMessage = customer.validate() ? null : customer.getValidationMessage();
-        if (serviceMessage == null) {
-            if (!daoManager.save(customer)) {
-                serviceMessage =  "DB-be írás sikertelen (részletek Log-ban)";
-            }
-        }
-        return serviceMessage == null;
-    }
-    
-    @Override
-    public Customer getCustomer(String idCustomer) {
-        return daoManager.getCustomer(idCustomer);
-    }
-
-    @Override
-    public void deleteCustomer(String idCustomer) {
-        daoManager.deleteCustomer(idCustomer);
-    }
-    
-    @Override
-    public List<Rent> listRents() {
-        return null;
-    }
-    
-    @Override
-    public List<Rent> listRentsFiltered(String numberPlate,String customerName, Boolean onlyPending) {
-        return null;
-    }
-    
-    @Override
-    public Boolean addRent(Rent rent) {
-        return true;
-    }
-    
-    @Override
-    public Boolean finishRent(Rent rent) {
-        return true;
-    }
-
-    public void deleteRent(String idRent) {
-        daoManager.deleteRent(idRent);
-    }
-    
-    public String getServiceMessage() {
-        return serviceMessage;
     }
 
     private void placeSelectedPhotoIntoSelectedFolder(Car car) {
@@ -156,7 +84,7 @@ public class Service implements IService {
         try {
             Files.copy(source, destination, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException ex) {
-            Logger.getLogger(Service.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CarService.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -169,7 +97,7 @@ public class Service implements IService {
             try {
                 Files.move(sourcePath,destinationPath,StandardCopyOption.REPLACE_EXISTING);
             } catch (IOException ex) {
-                Logger.getLogger(Service.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(CarService.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }

@@ -10,7 +10,10 @@ import rentacar.backend.entities.BareCar;
 import rentacar.backend.entities.Car;
 import rentacar.backend.entities.Customer;
 import rentacar.backend.entities.Rent;
-import rentacar.backend.service.Service;
+import rentacar.backend.service.CarService;
+import rentacar.backend.service.CustomerService;
+import rentacar.backend.service.RentService;
+import rentacar.backend.service.ServicesCommon;
 import rentacar.frontend.windows.RentACarWindowFrame;
 
 /**
@@ -20,7 +23,9 @@ import rentacar.frontend.windows.RentACarWindowFrame;
 public class GuiManager {
     
     private static RentACarWindowFrame screen;
-    private static Service service = new Service();
+    private static CarService carService = new CarService();
+    private static CustomerService customerService = new CustomerService();
+    private static RentService rentService = new RentService();
 //    private final static String BIGDECIMAL_REGEXP = "\\d+(\\.0*)?";
 //    private final static String INTEGER_REGEXP = "\\d+";
 
@@ -34,58 +39,59 @@ public class GuiManager {
     }
     
     public static String getServiceMessage() {
-        return service.getServiceMessage();
+        return ServicesCommon.getServiceMessage();
     }
     
     public static void deleteCar(String numberPlate) {
-        service.deleteCar(numberPlate);
+        carService.deleteCar(numberPlate);
     }
     
     public static List<Car> listCars() {
-        return service.listCars();
+        return carService.listCars();
     }
     
     public static void closeDB() {
-        service.closeDB();
+        ServicesCommon.closeDB();
     }
     
     public static Boolean storeCar(BareCar bareCar) {
-        return service.addCar(bareCar);
+        return carService.addCar(bareCar);
     }
     
     public static Boolean updateCar(BareCar bareCar) {
-        return service.modifyCar(bareCar);
+        return carService.modifyCar(bareCar);
     }
 
     public static List<Customer> listCustomers() {
-        return service.listCustomers();
+        return customerService.listCustomers();
     }
 
     public static Boolean storeCustomer(Customer customer) {
-        return service.addCustomer(customer);
+        return customerService.addCustomer(customer);
     }
 
     public static void deleteCustomer(String idCustomer) {
-        service.deleteCustomer(idCustomer);
+        customerService.deleteCustomer(idCustomer);
     }
 
     public static Customer getCustomer(String idCustomer) {
         return service.getCustomer(idCustomer);
+        customerService.getCustomer(idCustomer);
     }
 
     public static Boolean storeRent(Rent rent) {
-        return service.addRent(rent);
+        return rentService.addRent(rent);
     }
     
     public static Boolean updateRent(Rent rent) {
-        return service.finishRent(rent);
+        return rentService.finishRent(rent);
     }
 
     public static void deleteRent(String idRent) {
-        service.deleteRent(idRent);
+        rentService.deleteRent(idRent);
     }
 
     public static List<Rent> listRents() {
-        return service.listRents();
+        return rentService.listRents();
     }
 }

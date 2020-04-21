@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 import org.apache.derby.jdbc.EmbeddedDriver;
 import rentacar.backend.entities.Car;
 import rentacar.backend.entities.Customer;
+import rentacar.backend.entities.Rent;
 
 /**
  *
@@ -99,6 +100,14 @@ public class DaoManager {
         return successfulDataBaseWriting;
     }
     
+    public Customer getCustomer(String idCustomer) {
+        openConnection();
+        customerDao.setConnection(connection);
+        Customer customer = customerDao.findById(idCustomer);
+        closeConnection();
+        return customer;        
+    }
+    
     public List<Customer> listCustomers() {
         openConnection();
         customerDao.setConnection(connection);
@@ -121,6 +130,15 @@ public class DaoManager {
         customerDao.delete(idCustomer);
         closeConnection();
     }
+
+    public List<Rent> listRents() {
+        openConnection();
+        rentDao.setConnection(connection);
+        List<Rent> rents = rentDao.findAll();
+        closeConnection();
+        return rents;
+    }
+    
     
     public void deleteRent(String idRent){
         openConnection();
