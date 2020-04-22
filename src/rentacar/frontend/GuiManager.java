@@ -75,8 +75,7 @@ public class GuiManager {
     }
 
     public static Customer getCustomer(String idCustomer) {
-        return service.getCustomer(idCustomer);
-        customerService.getCustomer(idCustomer);
+        return customerService.getCustomer(idCustomer);
     }
 
     public static Boolean storeRent(Rent rent) {
