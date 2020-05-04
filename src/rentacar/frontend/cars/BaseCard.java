@@ -55,7 +55,7 @@ public class BaseCard extends JPanel{
         textField.setFocusable(false);
     }
 
-    void placeTitlesOnContent() {
+    private void placeTitlesOnContent() {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 0.5;

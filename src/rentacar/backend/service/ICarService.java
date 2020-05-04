@@ -16,14 +16,6 @@ import rentacar.backend.entities.Car;
 public interface ICarService {
 
     /**
-     * Egy autó lekérdezése rendszám (kulcs) alapján
-     * 
-     * @param numberPlate
-     * @return 
-     */
-    Car getCar(String numberPlate);
-
-    /**
      * Autók listázása
      * 
      * @return 
@@ -31,11 +23,11 @@ public interface ICarService {
     List<Car> listCars();
 
     /**
-     * Bérlésre rendelkezésre álló autók listázása
+     * Autó törlése, specifikáción kívüli karbantartáshoz
      * 
-     * @return 
+     * @param numberPlate
      */
-    List<Car> listCarsAvailable4Rent();
+    void deleteCar(String numberPlate);
 
     /**
      * Új autó felvétele
@@ -43,14 +35,7 @@ public interface ICarService {
      * @param bareCar
      * @return
      */
-    Boolean addCar(BareCar bareCar);
-    
-    /**
-     * Autó törlése, specifikáción kívüli karbantartáshoz
-     * 
-     * @param numberPlate
-     */
-    void deleteCar(String numberPlate);
+    boolean addCar(BareCar bareCar);
     
     /**
      * Autó módosítható adatainak megváltoztatása
@@ -58,5 +43,12 @@ public interface ICarService {
      * @param bareCar
      * @return 
      */
-    Boolean modifyCar(BareCar bareCar);
+    boolean modifyCar(BareCar bareCar);
+    
+    /**
+     * Bérlésre rendelkezésre álló autók listázása
+     * 
+     * @return 
+     */
+    List<Car> listCarsAvailable4Rent();
 }

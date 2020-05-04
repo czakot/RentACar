@@ -12,38 +12,37 @@ import rentacar.backend.entities.Customer;
  *
  * @author czakot
  */
-public class CustomerService extends AService implements ICustomerService {
+public class CustomerService extends BaseService implements ICustomerService {
 
     @Override
     public Customer getCustomer(String idCustomer) {
         return daoManager.getCustomer(idCustomer);
     }
-
+    
     @Override
     public List<Customer> listCustomers() {
         return daoManager.listCustomers();
     }
 
     @Override
-    public List<Customer> listCustomersEligible4Rent() {
-        return null;
+    public void deleteCustomer(String idCustomer) {
+        daoManager.deleteCustomer(idCustomer);
     }
     
     @Override
-    public Boolean addCustomer(Customer customer) {
+    public boolean addCustomer(Customer customer) {
         String serviceMessage = customer.validate() ? null : customer.getValidationMessage();
         if (serviceMessage == null) {
             if (!daoManager.save(customer)) {
                 serviceMessage =  "DB-be írás sikertelen (részletek Log-ban)";
             }
         }
-        ServicesCommon.setServiceMessage(serviceMessage);
+        setServiceMessage(serviceMessage);
         return serviceMessage == null;
     }
-    
+
     @Override
-    public void deleteCustomer(String idCustomer) {
-        daoManager.deleteCustomer(idCustomer);
+    public List<Customer> listCustomersEligible4Rent() {
+        return daoManager.listCustomersEligible4Rent();
     }
-    
 }

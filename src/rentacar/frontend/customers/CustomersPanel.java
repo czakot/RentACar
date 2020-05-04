@@ -67,7 +67,7 @@ public class CustomersPanel  extends JPanel {
         Customer customer = ((NewCard)customerDetails.getTopCard()).getCustomer();
         customersButtons.disableSaveDiscard();
         if (GuiManager.storeCustomer(customer)) {
-            resetCarGui();
+            resetCustomerGui();
         } else {
             doWhenNotSaved();
         }
@@ -78,10 +78,10 @@ public class CustomersPanel  extends JPanel {
         customersButtons.enableSaveDiscard();
     }
         
-    private void resetCarGui() {
+    private void resetCustomerGui() {
         customerDetails.discard();
         customerDetails.switchMode(DetailsMode.EMPTY);
         customersButtons.enableNew();
-        customersList.updateCarsTable();
+        customersList.updateCustomersTable();
     }
 }

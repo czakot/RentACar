@@ -21,25 +21,20 @@ import static rentacar.frontend.cars.BaseCard.PHOTO_SELECTED_PATH;
  *
  * @author czakot
  */
-public class CarService extends AService implements ICarService{
+public class CarService extends BaseService implements ICarService{
     
-    @Override
-    public Car getCar(String numberPlate) {
-        return daoManager.getCar(numberPlate);
-    }
-
     @Override
     public List<Car> listCars() {
         return daoManager.listCars();
     }
 
     @Override
-    public List<Car> listCarsAvailable4Rent() {
-        return null;
+    public void deleteCar(String numberPlate) {
+        daoManager.deleteCar(numberPlate);
     }
-
+    
     @Override
-    public Boolean addCar(BareCar bareCar) {
+    public boolean addCar(BareCar bareCar) {
         Car car = new Car(bareCar);
         String serviceMessage = car.isValid() ? null : car.getValidationMessage();
         if (serviceMessage == null && getCar(car.getNumberPlate()) == null) {
@@ -49,17 +44,12 @@ public class CarService extends AService implements ICarService{
                 placeSelectedPhotoIntoSelectedFolder(car);
             }
         }
-        ServicesCommon.setServiceMessage(serviceMessage);
+        setServiceMessage(serviceMessage);
         return serviceMessage == null;
     }
     
     @Override
-    public void deleteCar(String numberPlate) {
-        daoManager.deleteCar(numberPlate);
-    }
-    
-    @Override
-    public Boolean modifyCar(BareCar bareCar) {
+    public boolean modifyCar(BareCar bareCar) {
         Car car = new Car(bareCar);
         String serviceMessage = car.isValid() ? null : car.getValidationMessage();
         if (serviceMessage == null) {
@@ -69,8 +59,17 @@ public class CarService extends AService implements ICarService{
                 placeSelectedPhotoIntoSelectedFolder(car);
             }
         }
-        ServicesCommon.setServiceMessage(serviceMessage);
+        setServiceMessage(serviceMessage);
         return serviceMessage == null;
+    }
+
+    @Override
+    public List<Car> listCarsAvailable4Rent() {
+        return daoManager.listCarsAvailable4Rent();
+    }
+
+    private Car getCar(String numberPlate) {
+        return daoManager.getCar(numberPlate);
     }
 
     private void placeSelectedPhotoIntoSelectedFolder(Car car) {
@@ -102,3 +101,4 @@ public class CarService extends AService implements ICarService{
         }
     }
 }
+

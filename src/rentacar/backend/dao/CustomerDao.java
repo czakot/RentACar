@@ -26,51 +26,8 @@ public class CustomerDao extends GenericDao<Customer, String> implements ICustom
     }
 
     @Override
-    public Boolean save(Customer entity){
-        Boolean success = true;
-        String sql = "INSERT INTO USERNAME.CUSTOMERS (NAME, ADDRESS, PHONE) VALUES (?, ?, ?)";
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        try {
-            statement = connection.prepareStatement(sql);
-            statement.setString(1, entity.getName());
-            statement.setString(2, entity.getAddress());
-            statement.setString(3, entity.getPhone());
-            statement.executeUpdate();
-        } catch (SQLException ex) {
-            success = false;
-            System.out.println(ex.toString());
-            Logger.getLogger(CustomerDao.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            close(statement, resultSet);
-        }
-        return success;
-    }
-    
-    @Override
-    public Boolean update(Customer customer) {
-        return true;
-    }
-    
-    @Override
-    public void delete(String idCustomer) {
-        String sql = "DELETE FROM USERNAME.CUSTOMERS WHERE ID_CUSTOMER = ?";
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        try {
-            statement = connection.prepareStatement(sql);
-            statement.setString(1, idCustomer);
-            statement.executeUpdate();
-        } catch (SQLException ex) {
-            Logger.getLogger(CustomerDao.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            close(statement, resultSet);
-        }
-    }
-
-    @Override
     public Customer findById(String idCustomer){
-        String sql = "SELECT * FROM USERNAME.CUSTOMERRS WHERE ID_CUSTOMER = ?";
+        String sql = "SELECT * FROM USERNAME.CUSTOMERS WHERE ID_CUSTOMER = ?";
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
@@ -90,7 +47,7 @@ public class CustomerDao extends GenericDao<Customer, String> implements ICustom
         }
         return null;
     }
-    
+
     @Override
     public List<Customer> findAll(){
         String sql = "SELECT * FROM USERNAME.CUSTOMERS";
@@ -114,16 +71,48 @@ public class CustomerDao extends GenericDao<Customer, String> implements ICustom
     }
     
     @Override
+    public void delete(String idCustomer) {
+        String sql = "DELETE FROM USERNAME.CUSTOMERS WHERE ID_CUSTOMER = ?";
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            statement = connection.prepareStatement(sql);
+            statement.setString(1, idCustomer);
+            statement.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(CustomerDao.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            close(statement, resultSet);
+        }
+    }
+
+    @Override
+    public Boolean save(Customer entity){
+        Boolean success = true;
+        String sql = "INSERT INTO USERNAME.CUSTOMERS (NAME, ADDRESS, PHONE) VALUES (?, ?, ?)";
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            statement = connection.prepareStatement(sql);
+            statement.setString(1, entity.getName());
+            statement.setString(2, entity.getAddress());
+            statement.setString(3, entity.getPhone());
+            statement.executeUpdate();
+        } catch (SQLException ex) {
+            success = false;
+            System.out.println(ex.toString());
+            Logger.getLogger(CustomerDao.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            close(statement, resultSet);
+        }
+        return success;
+    }
+    
+    @Override
     public List<Customer> listCustomersEligible4Rent(){
-        // EZT A SELECTET MÉG MEG KELL ÍRNI !!!
-        String sql = "SELECT * FROM USERNAME.CARS " + 
-                         "WHERE IN_SERVICE != TRUE AND NUMBER_PLATE NOT IN " +                                      // nincs szervizben
-                         "(SELECT NUMBER_PLATE FROM RENTS WHERE PAID_FEE == 0) AND " +                              // nincs kibérelve
-                         "({fn TIMESTAMPDIFF(SQL_TSI_YEAR, CURRENT_DATE, YEAR_OF_MANUFACTURING)} < 10 AND " +       // 10 évnél fiatalabb és
-                         "{fn TIMESTAMPDIFF(SQL_TSI_YEAR, CURRENT_DATE, YEAR_OF_MANUFACTURING)} >= 5 AND " +        // 5 évnél idősebb és    
-                         "{fn TIMESTAMPDIFF(SQL_TSI_DAY, CURRENT_DATE, LAST_SERVICE)} < 182) OR " +     // szervizig legalább 1 napja van vagy
-                         "({fn TIMESTAMPDIFF(SQL_TSI_YEAR, CURRENT_DATE, YEAR_OF_MANUFACTURING)} < 5 AND " +   // 5 évnél fiatalabb és leg-
-                         "{fn TIMESTAMPDIFF(SQL_TSI_DAY, CURRENT_DATE, LAST_SERVICE)} < 364)";                  // alább 1 napja van szervizig
+        String sql = "SELECT * FROM USERNAME.CUSTOMERS " +
+                         "WHERE ID_CUSTOMER NOT IN " +
+                         "(SELECT ID_CUSTOMER FROM RENTS WHERE PAID_FEE = 0)";
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
@@ -164,4 +153,9 @@ public class CustomerDao extends GenericDao<Customer, String> implements ICustom
         customer.setPhone(resultSet.getString("PHONE"));
         return customer;
     }
+    
+    @Override
+    public Boolean update(Customer customer) {
+        return true;
+    }    
 }

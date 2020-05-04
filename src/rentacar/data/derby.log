@@ -1,19 +1,19 @@
 ----------------------------------------------------------------
-Tue Jan 08 13:27:22 CET 2019:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0168-2d6e-7f74-0000002eefaa 
-on database directory C:\Users\dc7ydt\Documents\NetBeansProjects\RentACar\src\rentacar\data\rentacarDB with class loader sun.misc.Launcher$AppClassLoader@6bc7c054 
-Loaded from file:/C:/Users/dc7ydt/Documents/NetBeansProjects/RentACar/src/rentacar/utility/derby.jar
-java.vendor=Oracle Corporation
-java.runtime.version=1.8.0_181-b13
-user.dir=C:\Users\dc7ydt\Documents\NetBeansProjects\RentACar\src\rentacar
-os.name=Windows 10
+Mon May 04 22:43:45 CEST 2020:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0171-e16e-297d-0000002eefaa 
+on database directory /home/czakot/NetBeansProjects/RentACar/src/rentacar/data/rentacarDB with class loader sun.misc.Launcher$AppClassLoader@135fbaa4 
+Loaded from file:/home/czakot/NetBeansProjects/RentACar/src/rentacar/utility/derby.jar
+java.vendor=Private Build
+java.runtime.version=1.8.0_252-8u252-b09-1~16.04-b09
+user.dir=/home/czakot/NetBeansProjects/RentACar/src/rentacar
+os.name=Linux
 os.arch=amd64
-os.version=10.0
+os.version=4.4.0-178-generic
 derby.system.home=data
 Database Class Loader started - derby.database.classpath=''
 ----------------------------------------------------------------
-Tue Jan 08 13:37:37 CET 2019: Shutting down Derby engine
+Mon May 04 22:44:09 CEST 2020: Shutting down Derby engine
 ----------------------------------------------------------------
-Tue Jan 08 13:37:37 CET 2019:
-Shutting down instance a816c00e-0168-2d6e-7f74-0000002eefaa on database directory C:\Users\dc7ydt\Documents\NetBeansProjects\RentACar\src\rentacar\data\rentacarDB with class loader sun.misc.Launcher$AppClassLoader@6bc7c054 
+Mon May 04 22:44:09 CEST 2020:
+Shutting down instance a816c00e-0171-e16e-297d-0000002eefaa on database directory /home/czakot/NetBeansProjects/RentACar/src/rentacar/data/rentacarDB with class loader sun.misc.Launcher$AppClassLoader@135fbaa4 
 ----------------------------------------------------------------

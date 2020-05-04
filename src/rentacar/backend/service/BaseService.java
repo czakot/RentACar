@@ -11,8 +11,19 @@ import rentacar.backend.dao.DaoManager;
  *
  * @author czakot
  */
-public abstract class AService {
+public class BaseService {
 
     protected static final DaoManager daoManager = ServicesCommon.getDaoManager();
+    private static String serviceMessage = "Még nincs üzenet";
+    
+    public static String getServiceMessage() {
+        return serviceMessage;
+    }
+
+    public static void setServiceMessage(String serviceMessage) {
+        BaseService.serviceMessage = serviceMessage;
+    }
+
+
     
 }

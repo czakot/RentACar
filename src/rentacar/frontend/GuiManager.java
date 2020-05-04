@@ -23,9 +23,9 @@ import rentacar.frontend.windows.RentACarWindowFrame;
 public class GuiManager {
     
     private static RentACarWindowFrame screen;
-    private static CarService carService = new CarService();
-    private static CustomerService customerService = new CustomerService();
-    private static RentService rentService = new RentService();
+    private static final CarService carService = new CarService();
+    private static final CustomerService customerService = new CustomerService();
+    private static final RentService rentService = new RentService();
 //    private final static String BIGDECIMAL_REGEXP = "\\d+(\\.0*)?";
 //    private final static String INTEGER_REGEXP = "\\d+";
 
@@ -38,51 +38,67 @@ public class GuiManager {
         screen.setVisible(true);
     }
     
-    public static String getServiceMessage() {
-        return ServicesCommon.getServiceMessage();
+    public static String getCarServiceMessage() {
+        return CarService.getServiceMessage();
     }
-    
-    public static void deleteCar(String numberPlate) {
-        carService.deleteCar(numberPlate);
+
+    public static String getCustomerServiceMessage() {
+        return CustomerService.getServiceMessage();
+    }
+
+    public static String getServiceMessage() {
+        return RentService.getServiceMessage();
     }
     
     public static List<Car> listCars() {
         return carService.listCars();
     }
     
+    public static void deleteCar(String numberPlate) {
+        carService.deleteCar(numberPlate);
+    }
+    
+    public static boolean storeCar(BareCar bareCar) {
+        return carService.addCar(bareCar);
+    }
+    
+    public static boolean updateCar(BareCar bareCar) {
+        return carService.modifyCar(bareCar);
+    }
+
+    public static List<Car> listCarsAvailable4Rent() {
+        return carService.listCarsAvailable4Rent();
+    }
+    
     public static void closeDB() {
         ServicesCommon.closeDB();
     }
     
-    public static Boolean storeCar(BareCar bareCar) {
-        return carService.addCar(bareCar);
-    }
-    
-    public static Boolean updateCar(BareCar bareCar) {
-        return carService.modifyCar(bareCar);
+    public static Customer getCustomer(String idCustomer) {
+        return customerService.getCustomer(idCustomer);
     }
 
     public static List<Customer> listCustomers() {
         return customerService.listCustomers();
     }
-
-    public static Boolean storeCustomer(Customer customer) {
-        return customerService.addCustomer(customer);
-    }
-
+    
     public static void deleteCustomer(String idCustomer) {
         customerService.deleteCustomer(idCustomer);
     }
 
-    public static Customer getCustomer(String idCustomer) {
-        return customerService.getCustomer(idCustomer);
+    public static boolean storeCustomer(Customer customer) {
+        return customerService.addCustomer(customer);
     }
 
-    public static Boolean storeRent(Rent rent) {
+    public static List<Customer> listCustomersEligible4Rent() {
+        return customerService.listCustomersEligible4Rent();
+    }
+
+    public static boolean storeRent(Rent rent) {
         return rentService.addRent(rent);
     }
     
-    public static Boolean updateRent(Rent rent) {
+    public static boolean updateRent(Rent rent) {
         return rentService.finishRent(rent);
     }
 

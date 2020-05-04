@@ -18,15 +18,6 @@ public class ServicesCommon {
     public static DaoManager getDaoManager() {
         return daoManager;
     }
-    private static String serviceMessage = null;
-    
-    public static String getServiceMessage() {
-        return serviceMessage;
-    }
-
-    public static void setServiceMessage(String serviceMessage) {
-        ServicesCommon.serviceMessage = serviceMessage;
-    }
 
     public static void closeDB() {
         daoManager.closeDB();

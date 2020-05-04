@@ -136,6 +136,6 @@ public class Car extends BareCar {
 
     @Override
     public String toString() {
-        return "Car[numberPlate=" + getNumberPlate() + "]";
+        return getNumberPlate();
     }
 }

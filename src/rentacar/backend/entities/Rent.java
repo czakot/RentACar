@@ -30,13 +30,14 @@ public class Rent {
     }
 
     public Rent(Integer idRent, int idCustomer, String numberPlate, LocalDate beginningDate, 
-                LocalDate expectedReturnDate, LocalDate returnDate, Integer paidFee) {
+                LocalDate expectedReturnDate, LocalDate returnDate, Integer dailyRentalFee, Integer paidFee) {
         this.idRent = idRent;
         this.idCustomer = idCustomer;
         this.numberPlate = numberPlate;
         this.beginningDate = beginningDate;
         this.expectedReturnDate = expectedReturnDate;
         this.returnDate = returnDate;
+        this.dailyRentalFee = dailyRentalFee;
         this.paidFee = paidFee;
     }
 

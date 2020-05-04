@@ -5,7 +5,6 @@
  */
 package rentacar.backend.service;
 
-import java.time.LocalDate;
 import java.util.List;
 import rentacar.backend.entities.Rent;
 
@@ -34,17 +33,22 @@ public interface IRentService {
     /**
      * Új bérlés felvitele
      * 
-     * @param customerId
-     * @param numberPlate
-     * @param expectedReturnDate 
+     * @param rent
+     * @return  
      */
-    Boolean addRent(int customerId, String numberPlate, LocalDate expectedReturnDate);
+    boolean addRent(Rent rent);
+        
+    /**
+     *
+     * @param rent
+     * @return 
+     */
+    boolean finishRent(Rent rent);
     
     /**
-     * Függő bérlés lezárása
-     * 
-     * @param rentId 
+     *
+     * @param rentId
      */
-    void closeRent(int rentId);
+    void deleteRent(String rentId);
     
 }

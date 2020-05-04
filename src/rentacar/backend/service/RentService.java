@@ -5,7 +5,6 @@
  */
 package rentacar.backend.service;
 
-import java.time.LocalDate;
 import java.util.List;
 import rentacar.backend.entities.Rent;
 
@@ -13,11 +12,11 @@ import rentacar.backend.entities.Rent;
  *
  * @author czakot
  */
-public class RentService extends AService implements IRentService {
+public class RentService extends BaseService implements IRentService {
 
     @Override
     public List<Rent> listRents() {
-        return null;
+        return daoManager.listRents();
     }
     
     @Override
@@ -26,11 +25,18 @@ public class RentService extends AService implements IRentService {
     }
     
     @Override
-    public boolean addRent(int customerId, String numberPlate, LocalDate expectedReturnDate) {
+    public boolean addRent(Rent rent) {
+        return daoManager.save(rent);
     }
     
     @Override
-    public void closeRent(int rentId) {
+    public boolean finishRent(Rent rent) {
+        return true;
+    }
+    
+    @Override
+    public void deleteRent(String rentId) {
+        
     }
     
 }

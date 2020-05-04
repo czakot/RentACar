@@ -95,7 +95,7 @@ public class RentsList extends JPanel {
 }
     
     private Object[][] getRents() {
-        final int COLUMN_NUMBER = 8;
+        final int COLUMN_NUMBER = COLUMN_NAMES.length; // = 8
         List<Rent> rents = GuiManager.listRents();
         Object[][] rentsObjArray = null;
         if (rents != null) {

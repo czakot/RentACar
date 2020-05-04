@@ -15,7 +15,6 @@ import rentacar.backend.entities.Customer;
 public interface ICustomerService {
 
     /**
-     * Egy ügyfél lekérdezése ügyfélazonosító alapján
      *
      * @param idCustomer
      * @return
@@ -30,11 +29,11 @@ public interface ICustomerService {
     List<Customer> listCustomers();
 
     /**
-     * Bérlésre jogosult ügyfelek listázása
-     * 
-     * @return 
+     * Ügyfél törlése, specifikáción kívüli karbantartáshoz
+     *
+     * @param idCustomer
      */
-    List<Customer> listCustomersEligible4Rent();
+    void deleteCustomer(String idCustomer);
     
     /**
      * Új ügyfél felvétele
@@ -42,13 +41,11 @@ public interface ICustomerService {
      * @param customer
      * @return 
      */
-    Boolean addCustomer(Customer customer);
-    
+    boolean addCustomer(Customer customer);
     /**
-     * Ügyfél törlése, specifikáción kívüli karbantartáshoz
-     *
-     * @param idCustomer
+     * Bérlésre jogosult ügyfelek listázása
+     * 
+     * @return 
      */
-    void deleteCustomer(String idCustomer);
-    
+    List<Customer> listCustomersEligible4Rent();
 }

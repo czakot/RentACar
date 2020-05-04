@@ -7,9 +7,12 @@ package rentacar.frontend.rents;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComboBox;
@@ -19,6 +22,7 @@ import org.jdatepicker.*;
 import rentacar.backend.entities.Car;
 import rentacar.backend.entities.Customer;
 import rentacar.backend.entities.Rent;
+import rentacar.frontend.GuiManager;
 import rentacar.utility.MyTextField;
 
 /**
@@ -45,7 +49,6 @@ public class NewCard extends BaseCard {
     public NewCard(RentDetails rentDetails) {
         super(rentDetails);
         
-        
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 0.5;
@@ -58,16 +61,19 @@ public class NewCard extends BaseCard {
         content.add(idRent,gbc);
         
         gbc.gridy++;
-//        ComboBoxModel<Customer> customerModel = new ComboBoxModel<>()
-        customer = new JComboBox<>();
+        List<Customer> customersList = GuiManager.listCustomersEligible4Rent();
+        customer = new JComboBox<>(customersList.toArray(new Customer[customersList.size()]));
         customer.setPreferredSize(new Dimension(303, 27));
         content.add(customer,gbc);
             
         gbc.gridy++;
-//        ComboBoxModel<Car> carModel = new ComboBoxModel<>()
-        car = new JComboBox<>();
+        List<Car> carsList = GuiManager.listCarsAvailable4Rent();
+        car = new JComboBox<>(carsList.toArray(new Car[carsList.size()]));
         car.setPreferredSize(new Dimension(303, 27));
         content.add(car,gbc);
+        car.addActionListener((ActionEvent e) -> {
+            syncDailyRentalFeeWithSelectedCar();
+        });
             
         gbc.gridy++;
         beginningDate = new MyTextField(LocalDate.now().toString());
@@ -87,6 +93,7 @@ public class NewCard extends BaseCard {
             
         gbc.gridy++;
         dailyRentalFee = new MyTextField("");
+        syncDailyRentalFeeWithSelectedCar();
         dailyRentalFee.setPreferredSize(new Dimension(303, 27));
         disableEditingOnTextField(dailyRentalFee);
         content.add(dailyRentalFee,gbc);
@@ -121,7 +128,7 @@ public class NewCard extends BaseCard {
         beginningDate.setText(LocalDate.now().toString());
         setDatePickerWithLocaldate(expectedReturnDate, LocalDate.now());
         returnDate.setText("");
-        dailyRentalFee.setText("");
+        syncDailyRentalFeeWithSelectedCar();
         paidFee.setText("0");
     }
     
@@ -144,8 +151,8 @@ public class NewCard extends BaseCard {
     
     Rent getRent() {
         Rent rent = new Rent();
-        rent.setIdCustomer(Integer.valueOf("customer ComboBox-ból"));
-        rent.setNumberPlate("car ComboBox-ból");
+        rent.setIdCustomer(customer.getItemAt(customer.getSelectedIndex()).getIdCustomer());
+        rent.setNumberPlate(car.getItemAt(car.getSelectedIndex()).getNumberPlate());
         rent.setBeginningDate(LocalDate.now());
         rent.setExpectedReturnDate(LocalDate.of(expectedReturnDate.getModel().getYear(),
                                             expectedReturnDate.getModel().getMonth()+1, 
@@ -155,5 +162,9 @@ public class NewCard extends BaseCard {
         rent.setPaidFee(0);
         
         return rent;
+    }
+    
+    private void syncDailyRentalFeeWithSelectedCar() {
+        dailyRentalFee.setText("" + car.getItemAt(car.getSelectedIndex()).getDailyRentalFee());
     }
 }

@@ -108,7 +108,7 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "rentacar.backend.entities.Customer[ idCustomer=" + idCustomer + " ]";
+        return name + "[ID: " + idCustomer + "]";
     }
 
     private void validateIdCustomer() {

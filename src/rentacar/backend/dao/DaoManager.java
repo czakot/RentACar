@@ -46,6 +46,7 @@ public class DaoManager {
 
 
     public DaoManager() {
+
         initDB();
         carDao = new CarDao(connection);
         customerDao = new CustomerDao(connection);
@@ -69,14 +70,6 @@ public class DaoManager {
         return cars;
     }
     
-    public Boolean save(Car car){
-        openConnection();
-        carDao.setConnection(connection);
-        Boolean successfulDataBaseWriting = carDao.save(car);
-        closeConnection();
-        return successfulDataBaseWriting;
-    }
-    
     public void deleteCar(String numberPlate){
         openConnection();
         carDao.setConnection(connection);
@@ -84,36 +77,28 @@ public class DaoManager {
         closeConnection();
     }
     
-    public Boolean update(Car car){
+    public boolean save(Car car){
         openConnection();
         carDao.setConnection(connection);
-        Boolean successfulDataBaseUpdating =  carDao.update(car);
-        closeConnection();
-        return successfulDataBaseUpdating;
-    }
-    
-    public Boolean save(Customer customer){
-        openConnection();
-        customerDao.setConnection(connection);
-        Boolean successfulDataBaseWriting = customerDao.save(customer);
+        boolean successfulDataBaseWriting = carDao.save(car);
         closeConnection();
         return successfulDataBaseWriting;
     }
     
-    public Customer getCustomer(String idCustomer) {
+    public boolean update(Car car){
         openConnection();
-        customerDao.setConnection(connection);
-        Customer customer = customerDao.findById(idCustomer);
+        carDao.setConnection(connection);
+        boolean successfulDataBaseUpdating =  carDao.update(car);
         closeConnection();
-        return customer;        
+        return successfulDataBaseUpdating;
     }
     
-    public List<Customer> listCustomers() {
+    public List<Car> listCarsAvailable4Rent() {
         openConnection();
-        customerDao.setConnection(connection);
-        List<Customer> customers = customerDao.findAll();
+        carDao.setConnection(connection);
+        List<Car> cars = carDao.listCarsAvailable4Rent();
         closeConnection();
-        return customers;
+        return cars;
     }
     
     public Customer getCustomer(String idCustomer) {
@@ -124,6 +109,14 @@ public class DaoManager {
         return customer;
     }
     
+    public List<Customer> listCustomers() {
+        openConnection();
+        customerDao.setConnection(connection);
+        List<Customer> customers = customerDao.findAll();
+        closeConnection();
+        return customers;
+    }
+    
     public void deleteCustomer(String idCustomer){
         openConnection();
         customerDao.setConnection(connection);
@@ -131,6 +124,14 @@ public class DaoManager {
         closeConnection();
     }
 
+    public boolean save(Customer customer){
+        openConnection();
+        customerDao.setConnection(connection);
+        boolean successfulDataBaseWriting = customerDao.save(customer);
+        closeConnection();
+        return successfulDataBaseWriting;
+    }
+    
     public List<Rent> listRents() {
         openConnection();
         rentDao.setConnection(connection);
@@ -139,12 +140,27 @@ public class DaoManager {
         return rents;
     }
     
-    
     public void deleteRent(String idRent){
         openConnection();
         rentDao.setConnection(connection);
         rentDao.delete(idRent);
         closeConnection();
+    }
+    
+    public boolean save(Rent rent){
+        openConnection();
+        rentDao.setConnection(connection);
+        boolean successfulDataBaseWriting = rentDao.save(rent);
+        closeConnection();
+        return successfulDataBaseWriting;
+    }
+    
+    public List<Customer> listCustomersEligible4Rent() {
+        openConnection();
+        customerDao.setConnection(connection);
+        List<Customer> customers = customerDao.listCustomersEligible4Rent();
+        closeConnection();
+        return customers;
     }
     
     public void closeDB() {
@@ -209,6 +225,7 @@ public class DaoManager {
             scanner = new Scanner(new FileInputStream(new File(SCRIPT_PATH)));
             scanner.useDelimiter(DELIMITER);
             try(Statement st = connection.createStatement()){
+                int lnr = 1;
                 while (scanner.hasNext()) {
                     String line = scanner.next();
                     if (line.contains(";")) {

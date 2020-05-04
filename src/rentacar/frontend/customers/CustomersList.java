@@ -50,13 +50,13 @@ public class CustomersList extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 GuiManager.deleteCustomer(selectedIdCustomer);
                 selectedIdCustomer = null;
-                updateCarsTable();
+                updateCustomersTable();
             }
         });
         add(helperDeleteButton,BorderLayout.SOUTH);
-// ****** specifikáción kívüli autó törlés ******/
+// ****** specifikáción kívüli customer törlés ******/
 
-//        carsPanel.refreshCarDetails(getSelectedCarDetails());
+//        customersPanel.refreshCustomerDetails(getSelectedCustomerDetails());
     }
     
     Customer getSelectedCustomer() {
@@ -100,7 +100,7 @@ public class CustomersList extends JPanel {
         }
     }
     
-    void updateCarsTable() {
+    void updateCustomersTable() {
         CustomersListTableModel tableModel = (CustomersListTableModel)(customersTable.getModel());
         tableModel.setRowCount(0);
         Object[][] customersObjArray = getCustomers();
@@ -121,12 +121,12 @@ public class CustomersList extends JPanel {
     }
     
     void enableRowSelectionChange() {
-//        carsTable.setRowSelectionAllowed(true);
+//        customersTable.setRowSelectionAllowed(true);
         customersTable.setEnabled(true);
     }
     
     void disableRowSelectionChange() {
-//        carsTable.setRowSelectionAllowed(false);
+//        customersTable.setRowSelectionAllowed(false);
         customersTable.setEnabled(false);
     }
 }

@@ -144,12 +144,14 @@ public class CarDao extends GenericDao<Car, String> implements ICarDao {
     public List<Car> listCarsAvailable4Rent(){
         String sql = "SELECT * FROM USERNAME.CARS " + 
                          "WHERE IN_SERVICE != TRUE AND NUMBER_PLATE NOT IN " +                                      // nincs szervizben
-                         "(SELECT NUMBER_PLATE FROM RENTS WHERE PAID_FEE == 0) AND " +                              // nincs kibérelve
+                         "(SELECT NUMBER_PLATE FROM RENTS WHERE PAID_FEE = 0)";
+/*                + " AND "; +                              // nincs kibérelve
                          "({fn TIMESTAMPDIFF(SQL_TSI_YEAR, CURRENT_DATE, YEAR_OF_MANUFACTURING)} < 10 AND " +       // 10 évnél fiatalabb és
                          "{fn TIMESTAMPDIFF(SQL_TSI_YEAR, CURRENT_DATE, YEAR_OF_MANUFACTURING)} >= 5 AND " +        // 5 évnél idősebb és    
                          "{fn TIMESTAMPDIFF(SQL_TSI_DAY, CURRENT_DATE, LAST_SERVICE)} < 182) OR " +     // szervizig legalább 1 napja van vagy
                          "({fn TIMESTAMPDIFF(SQL_TSI_YEAR, CURRENT_DATE, YEAR_OF_MANUFACTURING)} < 5 AND " +   // 5 évnél fiatalabb és leg-
                          "{fn TIMESTAMPDIFF(SQL_TSI_DAY, CURRENT_DATE, LAST_SERVICE)} < 364)";                  // alább 1 napja van szervizig
+*/
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
