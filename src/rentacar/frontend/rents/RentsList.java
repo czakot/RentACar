@@ -31,7 +31,7 @@ public class RentsList extends JPanel {
     private final RentsPanel rentsPanel;
     private final JTable rentsTable;
     private String selectedIdRent = null;
-    private static final String[] COLUMN_NAMES = {"ID", "Ügyfélazonosító", "Rendszám", "Kezdés", "Tervezett befejezés", "Befejezés", "Napi bérleti díj", "Fizetett"};
+    private static final String[] COLUMN_NAMES = {"ID", "Ü-ID", "Ü-Név", "Rendszám", "Kezdés", "Tervezett befejezés", "Befejezés", "Napi bérleti díj", "Fizetett"};
 
     public RentsList(RentsPanel rentsPanel) {
         this.rentsPanel = rentsPanel;
@@ -46,8 +46,8 @@ public class RentsList extends JPanel {
         rentsTable.setColumnSelectionAllowed(false);
         rentsTable.getSelectionModel().addListSelectionListener(this::actionRowSelectionChanged);
         add(new JScrollPane(rentsTable),BorderLayout.CENTER);
-// ****** specifikáción kívüli autó törlés ******
-         JButton helperDeleteButton = new JButton("Delete Selected");
+// ****** specifikáción kívüli bérlés törlés ******
+        JButton helperDeleteButton = new JButton("Delete Selected");
         helperDeleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -72,24 +72,24 @@ public class RentsList extends JPanel {
         
         rent.setIdRent(Integer.valueOf(rentsTable.getValueAt(row,0).toString()));
         rent.setIdCustomer(Integer.valueOf(rentsTable.getValueAt(row,1).toString()));
-        rent.setNumberPlate(rentsTable.getValueAt(row,2).toString());
+        rent.setNumberPlate(rentsTable.getValueAt(row,3).toString());
         try {
-            rent.setBeginningDate(LocalDate.parse(rentsTable.getValueAt(row,3).toString(), DateTimeFormatter.ISO_LOCAL_DATE));
+            rent.setBeginningDate(LocalDate.parse(rentsTable.getValueAt(row,4).toString(), DateTimeFormatter.ISO_LOCAL_DATE));
         } catch (DateTimeParseException dtpe) {
             rent.setBeginningDate(null);
         }
         try {
-            rent.setExpectedReturnDate(LocalDate.parse(rentsTable.getValueAt(row,4).toString(), DateTimeFormatter.ISO_LOCAL_DATE));
+            rent.setExpectedReturnDate(LocalDate.parse(rentsTable.getValueAt(row,5).toString(), DateTimeFormatter.ISO_LOCAL_DATE));
         } catch (DateTimeParseException dtpe) {
             rent.setExpectedReturnDate(null);
         }
         try {
-            rent.setReturnDate(LocalDate.parse(rentsTable.getValueAt(row,5).toString(), DateTimeFormatter.ISO_LOCAL_DATE));
-        } catch (DateTimeParseException dtpe) {
+            rent.setReturnDate(LocalDate.parse(rentsTable.getValueAt(row,6).toString(), DateTimeFormatter.ISO_LOCAL_DATE));
+        } catch (NullPointerException | DateTimeParseException dtpe) {
             rent.setReturnDate(null);
         }
-        rent.setDailyRentalFee(Integer.valueOf(rentsTable.getValueAt(row,6).toString()));
-        rent.setPaidFee(Integer.valueOf(rentsTable.getValueAt(row,7).toString()));
+        rent.setDailyRentalFee(Integer.valueOf(rentsTable.getValueAt(row,7).toString()));
+        rent.setPaidFee(Integer.valueOf(rentsTable.getValueAt(row,8).toString()));
 
         return rent;
 }
@@ -103,13 +103,15 @@ public class RentsList extends JPanel {
             int rowIdx = 0;
             for (Rent rent : rents) {
                 rentsObjArray[rowIdx][0] = rent.getIdRent();
-                rentsObjArray[rowIdx][1] = rent.getIdCustomer();
-                rentsObjArray[rowIdx][2] = rent.getNumberPlate();
-                rentsObjArray[rowIdx][3] = rent.getBeginningDate();
-                rentsObjArray[rowIdx][4] = rent.getExpectedReturnDate();
-                rentsObjArray[rowIdx][5] = rent.getReturnDate();
-                rentsObjArray[rowIdx][6] = rent.getDailyRentalFee();
-                rentsObjArray[rowIdx][7] = rent.getPaidFee();
+                int idCustomer = rent.getIdCustomer();
+                rentsObjArray[rowIdx][1] = idCustomer;
+                rentsObjArray[rowIdx][2] = GuiManager.getCustomer(String.valueOf(idCustomer)).getName();
+                rentsObjArray[rowIdx][3] = rent.getNumberPlate();
+                rentsObjArray[rowIdx][4] = rent.getBeginningDate();
+                rentsObjArray[rowIdx][5] = rent.getExpectedReturnDate();
+                rentsObjArray[rowIdx][6] = rent.getReturnDate();
+                rentsObjArray[rowIdx][7] = rent.getDailyRentalFee();
+                rentsObjArray[rowIdx][8] = rent.getPaidFee();
                 rowIdx++;
             }
         }

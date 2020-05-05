@@ -37,7 +37,7 @@ public class DetailsCard extends BaseCard {
         
         textField[0].setText(rent.getIdRent().toString());
         Customer customer = GuiManager.getCustomer(Integer.toString(rent.getIdCustomer()));
-        textField[1].setText(customer.getName() + " (ID: " + customer.getIdCustomer() + ")");
+        textField[1].setText(customer.getIdCustomer() + " - " + customer.getName());
         textField[1].setToolTipText("Cím: " + customer.getAddress() + "\nTelefon: " + customer.getPhone());
         textField[2].setText(rent.getNumberPlate());
         textField[3].setText(rent.getBeginningDate().toString());

@@ -108,7 +108,7 @@ public class Customer {
 
     @Override
     public String toString() {
-        return name + "[ID: " + idCustomer + "]";
+        return idCustomer + " - " + name;
     }
 
     private void validateIdCustomer() {

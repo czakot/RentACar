@@ -95,7 +95,7 @@ public class RentDetails extends JPanel {
     
     private void setDetailsTitle(DetailsMode mode) {
         ((TitledBorder)(((CompoundBorder)(this.getBorder())).getInsideBorder())).setTitle(mode.getTitle());
-        validate(); //repaint();
+        repaint();
     }
     
     void discard() {
