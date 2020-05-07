@@ -1,19 +1,19 @@
 ----------------------------------------------------------------
-Tue May 05 10:30:07 CEST 2020:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0171-e3f4-dcfe-0000002eefaa 
-on database directory /home/czakot/NetBeansProjects/RentACar/src/rentacar/data/rentacarDB with class loader sun.misc.Launcher$AppClassLoader@135fbaa4 
+Thu May 07 14:51:22 CEST 2020:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0171-ef30-c104-0000002eefaa 
+on database directory /home/czakot/NetBeansProjects/RentACar/src/rentacar/data/rentacarDB with class loader sun.misc.Launcher$AppClassLoader@7f31245a 
 Loaded from file:/home/czakot/NetBeansProjects/RentACar/src/rentacar/utility/derby.jar
 java.vendor=Private Build
 java.runtime.version=1.8.0_252-8u252-b09-1~16.04-b09
 user.dir=/home/czakot/NetBeansProjects/RentACar/src/rentacar
 os.name=Linux
 os.arch=amd64
-os.version=4.4.0-178-generic
+os.version=4.15.0-99-generic
 derby.system.home=data
 Database Class Loader started - derby.database.classpath=''
 ----------------------------------------------------------------
-Tue May 05 10:40:29 CEST 2020: Shutting down Derby engine
+Thu May 07 14:51:45 CEST 2020: Shutting down Derby engine
 ----------------------------------------------------------------
-Tue May 05 10:40:29 CEST 2020:
-Shutting down instance a816c00e-0171-e3f4-dcfe-0000002eefaa on database directory /home/czakot/NetBeansProjects/RentACar/src/rentacar/data/rentacarDB with class loader sun.misc.Launcher$AppClassLoader@135fbaa4 
+Thu May 07 14:51:45 CEST 2020:
+Shutting down instance a816c00e-0171-ef30-c104-0000002eefaa on database directory /home/czakot/NetBeansProjects/RentACar/src/rentacar/data/rentacarDB with class loader sun.misc.Launcher$AppClassLoader@7f31245a 
 ----------------------------------------------------------------

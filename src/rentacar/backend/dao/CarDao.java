@@ -38,7 +38,7 @@ public class CarDao extends GenericDao<Car, String> implements ICarDao {
             statement.setString(1, entity.getNumberPlate());
             statement.setString(2, entity.getMake());
             statement.setString(3, entity.getModel());
-            statement.setInt(4, entity.getYearOfManufacturing());
+            statement.setDate(4, java.sql.Date.valueOf(String.valueOf(entity.getYearOfManufacturing()) + "-12-31"));
             statement.setInt(5, entity.getDailyRentalFee());
             statement.setDate(6, java.sql.Date.valueOf(entity.getLastService()));
             statement.setBoolean(7, entity.getInService());
@@ -142,16 +142,18 @@ public class CarDao extends GenericDao<Car, String> implements ICarDao {
     
     @Override
     public List<Car> listCarsAvailable4Rent(){
-        String sql = "SELECT * FROM USERNAME.CARS " + 
-                         "WHERE IN_SERVICE != TRUE AND NUMBER_PLATE NOT IN " +                                      // nincs szervizben
-                         "(SELECT NUMBER_PLATE FROM RENTS WHERE PAID_FEE = 0)";
-/*                + " AND "; +                              // nincs kibérelve
-                         "({fn TIMESTAMPDIFF(SQL_TSI_YEAR, CURRENT_DATE, YEAR_OF_MANUFACTURING)} < 10 AND " +       // 10 évnél fiatalabb és
-                         "{fn TIMESTAMPDIFF(SQL_TSI_YEAR, CURRENT_DATE, YEAR_OF_MANUFACTURING)} >= 5 AND " +        // 5 évnél idősebb és    
-                         "{fn TIMESTAMPDIFF(SQL_TSI_DAY, CURRENT_DATE, LAST_SERVICE)} < 182) OR " +     // szervizig legalább 1 napja van vagy
-                         "({fn TIMESTAMPDIFF(SQL_TSI_YEAR, CURRENT_DATE, YEAR_OF_MANUFACTURING)} < 5 AND " +   // 5 évnél fiatalabb és leg-
-                         "{fn TIMESTAMPDIFF(SQL_TSI_DAY, CURRENT_DATE, LAST_SERVICE)} < 364)";                  // alább 1 napja van szervizig
-*/
+        // nincs szervizben és nincs kibérelve és 10 évnél fiatalabb és
+        // ((5 évnél idősebb és féléves szervizig legalább 1 napja van) vagy
+        //  (5 évnél fiatalabb és éves szervizig legalább 1 napja van))
+        String sql = 
+            "SELECT * FROM USERNAME.CARS " +
+            "WHERE IN_SERVICE != TRUE AND NUMBER_PLATE NOT IN " +
+            "(SELECT NUMBER_PLATE FROM USERNAME.RENTS WHERE PAID_FEE = 0) AND " +
+            "{fn TIMESTAMPDIFF(SQL_TSI_YEAR, YEAR_OF_MANUFACTURING, CURRENT_DATE)} < 10 AND "  +
+            "( ( {fn TIMESTAMPDIFF(SQL_TSI_YEAR, YEAR_OF_MANUFACTURING, CURRENT_DATE)} >= 5 AND " +
+            "    {fn TIMESTAMPDIFF(SQL_TSI_DAY, LAST_SERVICE, CURRENT_DATE)} < 182 ) OR " +
+            "  ( {fn TIMESTAMPDIFF(SQL_TSI_YEAR, YEAR_OF_MANUFACTURING, CURRENT_DATE)} < 5 AND " +
+            "    {fn TIMESTAMPDIFF(SQL_TSI_DAY, LAST_SERVICE, CURRENT_DATE)} < 364 ) )";
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
@@ -189,7 +191,7 @@ public class CarDao extends GenericDao<Car, String> implements ICarDao {
         car.setNumberPlate(resultSet.getString("NUMBER_PLATE"));
         car.setMake(resultSet.getString("MAKE"));
         car.setModel(resultSet.getString("MODEL"));
-        car.setYearOfManufacturing(resultSet.getInt("YEAR_OF_MANUFACTURING"));
+        car.setYearOfManufacturing(resultSet.getDate("YEAR_OF_MANUFACTURING").toLocalDate().getYear());
         car.setDailyRentalFee(resultSet.getInt("DAILY_RENTAL_FEE"));
         car.setLastService((resultSet.getDate("LAST_SERVICE")).toLocalDate());
         car.setInService(resultSet.getBoolean("IN_SERVICE"));

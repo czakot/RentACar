@@ -165,6 +165,10 @@ public class NewCard extends BaseCard {
     }
     
     private void syncDailyRentalFeeWithSelectedCar() {
+      try {
         dailyRentalFee.setText("" + car.getItemAt(car.getSelectedIndex()).getDailyRentalFee());
+      } catch (NullPointerException npe) {
+        dailyRentalFee.setText("");
+      }
     }
 }
